@@ -1,0 +1,14 @@
+page-book-details {
+    .showContent{
+        display: block;
+    }
+
+    .hideContent {
+        display: none;
+    }
+
+}
+ion-app.cameraView, ion-app.cameraView ion-content, ion-app.cameraView .nav-decor {
+    background: transparent none !important; 
+  }
+

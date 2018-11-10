@@ -1,0 +1,14 @@
+1) app runs with cordova-android version 6.4. This is due to change in structure of platform code generated from cordova-android 7 onwards.
+	cordova-vuforia-plugin needs to be updated to handle this new structure and can be taken up as an enhancement. 
+	During build phase, use the following command:
+	ionic cordova platform add android@6.4
+
+	NOTE: step 2 is only required if the app uses QR scanner. Current version does not (code is commented).
+2) app uses a modified version of cordova-plugin-qrscanner. camera related permissions are required for both qrscanner and vuforia plugins. 
+	This causes issue while building - a duplicate entry issue is raised for AndroidManifest.xml. Hence, a locally modified qrscanner is used where 
+	permissions in config.xml have been modified. Modified code of plugin availabe at: https://github.com/ankugupta/cordova-plugin-qrscanner.git/trunk.
+	To add this into your project, use: 
+	a. clone code on to your machine
+	b. run npm install to install dependencies
+	c. build plugin using npm run-script build
+	d. ionic cordova plugin add {local path to plugin directory}
