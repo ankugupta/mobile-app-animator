@@ -35,7 +35,6 @@
         "cordova-plugin-inappbrowser": "3.0.0",
         "cordova-plugin-ionic-keyboard": "2.0.5",
         "cordova-plugin-ionic-webview": "1.1.19",
-        "cordova-plugin-qrscanner": "file:../../customized-qr-scanner-plugin/trunk",
         "cordova-plugin-screen-orientation": "3.0.1",
         "cordova-plugin-splashscreen": "5.0.2",
         "cordova-plugin-vuforia": "3.2.1",
@@ -64,8 +63,7 @@
             "cordova-plugin-inappbrowser": {},
             "cordova-plugin-file": {},
             "cordova-plugin-screen-orientation": {},
-            "cordova-plugin-vuforia": {},
-            "cordova-plugin-qrscanner": {}
+            "cordova-plugin-vuforia": {}
         },
         "platforms": [
             "android"
