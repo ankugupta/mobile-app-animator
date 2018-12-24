@@ -1,4 +1,5 @@
-1) app runs with cordova-android version 6.4. This is due to change in structure of platform code generated from cordova-android 7 onwards.
+1) OLDER ISSUE - Resolved since with cordova-android version 7.4:
+	app runs with cordova-android version 6.4. This is due to change in structure of platform code generated from cordova-android 7 onwards.
 	cordova-vuforia-plugin needs to be updated to handle this new structure and can be taken up as an enhancement. 
 	During build phase, use the following command:
 	ionic cordova platform add android@6.4
