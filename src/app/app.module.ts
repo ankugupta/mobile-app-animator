@@ -1,49 +1,50 @@
+//angular
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
-import { MyBooksPage } from '../pages/myBooks/myBooks';
-import { SearchBooksPage } from '../pages/searchBooks/searchBooks';
-import { BookDetailsPage} from '../pages/bookDetails/bookDetails';
-import { TabsPage } from '../pages/tabs/tabs';
-import { ScanBookPage } from '../pages/scan-book/scan-book';
-
+//ionic-natives
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { File } from '@ionic-native/file';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { SQLite } from '@ionic-native/sqlite';
+import { Device } from '@ionic-native/device';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { Network } from '@ionic-native/network';
+
+//pages - all other pages are lazy loaded via their own modules
+import { MyApp } from './app.component';
+
+//providers
 import { DataProvider } from '../providers/data.provider';
 import { BooksProvider } from '../providers/books.provider';
+import { SqlStorageProvider } from '../providers/sql-storage.provider';
+import { DeviceProvider } from '../providers/device.provider';
+import { FilesProvider } from '../providers/files.provider';
+import { ScanProvider } from '../providers/scan.provider';
+
+//custom modules
+import { ComponentsModule } from '../components/components.module';
+
+
 
 @NgModule({
   declarations: [
-    MyApp,
-    AboutPage,
-    MyBooksPage,
-    SearchBooksPage,
-    BookDetailsPage,
-    TabsPage,
-    ScanBookPage
+    MyApp
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ComponentsModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    AboutPage,
-    MyBooksPage,
-    SearchBooksPage,
-    TabsPage,
-    BookDetailsPage,
-    ScanBookPage
+    MyApp
   ],
   providers: [
     StatusBar,
@@ -52,9 +53,17 @@ import { BooksProvider } from '../providers/books.provider';
     InAppBrowser,
     File,
     ScreenOrientation,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    SQLite,
+    Device,
+    FileTransfer,
+    Network,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     DataProvider,
-    BooksProvider
+    BooksProvider,
+    SqlStorageProvider,
+    DeviceProvider,
+    FilesProvider,
+    ScanProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }

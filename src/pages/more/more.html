@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-navbar color="secondary">
+        <ion-title>More</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-list>
+        <button ion-item *ngFor="let detail of details" (click)="openMoreDetailsPage(detail)" icon-start>
+      <ion-icon [name]="detail.icon" item-start></ion-icon>
+      {{ detail.title }}
+    </button>
+    </ion-list>
+    <ion-list>
+        <button ion-item icon-start (click)="logMeOut()">
+          <ion-icon name="log-out"  item-start></ion-icon>
+          Log Out
+        </button>
+    </ion-list>
+</ion-content>

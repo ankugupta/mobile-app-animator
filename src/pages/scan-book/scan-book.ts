@@ -1,212 +1,409 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { Platform, NavParams, NavController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { Platform, NavParams, NavController, LoadingController, AlertController, Loading, IonicPage } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { File } from '@ionic-native/file';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { Book } from '../../model/book';
+import { BookEntity } from "../../model/bookEntity";
+import { BooksProvider } from '../../providers/books.provider';
+import * as Constants from '../../app/app.constants';
+import { FilesProvider } from '../../providers/files.provider';
+import { SqlStorageProvider } from '../../providers/sql-storage.provider';
+import { PageEntity } from '../../model/pageEntity';
+import { Page } from '../../model/page';
+import { DeviceProvider } from '../../providers/device.provider';
 
-
+@IonicPage()
 @Component({
   selector: 'page-scan-book',
   templateUrl: 'scan-book.html'
 })
-export class ScanBookPage implements OnInit{
+export class ScanBookPage {
 
   public currentBook: Book;
-  public scanning: boolean = false;
+  private vuforiaConfig: { targetList: string[], targetXMLPath: string };
+  private bookAlreadyDownloaded: boolean = false;
+  private scanningStopped: boolean = false;
+  private downloadingBook: boolean = false;
+  public downloadProgress: number = 0;
 
-  @ViewChild("myaudio")
-  public myAudio: ElementRef;
-  // Are we launching Vuforia with simple options?
-  simpleOptions = null;
-  // Which images have we matched?
-  matchedImages = [];
-
-  // Vuforia license
-  vuforiaLicense = "AfwNugr/////AAABmXSkhi4Wc0y2k2u/t+KF1/iJ4ZMm1p1k8duNetuGt2xMVstBzN2aOC3aNkUMWuCQjUcdoluNVL+wkRqiden+ZsuveS8ccvkbGFZyPLexUsFBZrlrycv4c+O+tH6stLswQ8oh9mpwqFj09Kajfgr8Mabf40Y+QjtGffxa/Un93OMnULUCebsQVJVlY18GsUydNSSc5ijLmKqQpTLFp5xDWnSsVD3Pz9gE5z7Bvyv+2oI35uccwY/gEsKQhHs4oCbgESgTqMyTxvICvQO4vYEljmt3Ac4g4CQjVZcttQiAiRLxTDFcfY0xxORaXc9CltcVq4TWrviKRKAZsqDMLz2eOepHdHI42gpCfIJHDGnfMpTF";
-  // Application Constructor
-  constructor(private screenOrientation: ScreenOrientation, 
-    private file: File, 
-    private iab: InAppBrowser, 
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
-    public platform: Platform) {
+  constructor(private screenOrientation: ScreenOrientation,
+    private iab: InAppBrowser,
+    private loadingController: LoadingController,
+    private deviceProvider: DeviceProvider,
+    private alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private platform: Platform,
+    private booksProvider: BooksProvider,
+    private filesProvider: FilesProvider,
+    private sqlProvider: SqlStorageProvider) {
 
   }
 
-  ngOnInit(){
-    this.currentBook = this.navParams.get("book");
-    console.log("current book: ", this.currentBook);    
+  ionViewWillEnter() {
+    //init variables
+    this.bookAlreadyDownloaded = false;
+    this.scanningStopped = false;
+    this.downloadingBook = false;
+
+    //process nav params
+    let currentBookId = this.navParams.get("bookId");
+
+    console.log("current book id: ", currentBookId);
+    if (this.deviceProvider.checkNetworkDisconnected()) {
+      this.presentOfflineAlert();
+    }
+    else {
+      this.loadBookDetails(currentBookId);
+    }
   }
 
-  public scanForImage(){
-    this.startVuforia(true);
-  }
+  public loadBookDetails(bookId: string) {
+    //show load icon
+    let loader = this.loadingController.create();
+    loader.present();
 
-  public startAndStop() {
-    this.startVuforia(true);
+    //fetch book details
+    this.booksProvider.getBookByBookId(bookId).subscribe(
+      bookdetails => {
+        this.currentBook = bookdetails;
+        console.log("book details loaded: ", this.currentBook);
 
-    console.log('Starting timer...');
-
-    // Wait for a timeout, then automatically stop Vuforia
-    setTimeout(function () {
-      this.stopVuforia();
-    }, 10000);
-  }
-
-  public recognizeInSeq() {
-    var imagesMatched = 0,
-      imageSequence = ['iceland', ['canterbury-grass', 'brick-lane'], 'iceland'];
-
-    var successCallback = function (data) {
-      console.log('Found ' + data.result.imageName);
-
-      imagesMatched++;
-
-      this.playSound(); // Play a sound so that the user has some feedback
-
-      // Are there more images to match?
-      if (imagesMatched < imageSequence.length) {
-        var newTargets = [imageSequence[imagesMatched]];
-
-        console.log('Updating targets to: ' + newTargets);
-
-        (<any>navigator).VuforiaPlugin.updateVuforiaTargets(
-          newTargets,
-          function (data) {
-            console.log(data);
-            console.log('Updated targets');
+        this.sqlProvider.getBookMap(false).then(
+          (bookMap: Map<string, BookEntity>) => {
+            //if book already downloaded
+            if (bookMap.has(bookId)) {
+              this.configureVuforiaAndEnableScan(bookMap.get(bookId).targetXMLUrl);
+            }
+            loader.dismiss();
           },
-          function (data) {
-            alert("Error: " + data);
+          error => {
+            loader.dismiss();
+            console.error("ERROR: cannot get book map ", error);
+            this.presentFailureAlert("Technical Error", "Please try again later");
           }
-        );
-      } else {
-        (<any>navigator).VuforiaPlugin.stopVuforia(function () {
-          alert("Congratulations!\nYou found all three images!");
-        },
-          this.errorHandler);
+        )
+      },
+      error => {
+        loader.dismiss();
+        console.log("error while fetching book details ", error);
+        this.presentFailureAlert("Technical Error", "Please try again later");
       }
-    };
-
-    var options = {
-      databaseXmlFile: 'PluginTest.xml',
-      targetList: ['iceland'],
-      overlayMessage: 'Scan images in the order: \'iceland\', (\'canterbury-grass\' or \'brick-lane\'), then \'iceland\'.',
-      vuforiaLicense: this.vuforiaLicense,
-      autostopOnImageFound: false
-    };
-
-    // Start Vuforia with our options
-    (<any>navigator).VuforiaPlugin.startVuforia(
-      options,
-      successCallback,
-      function (data) {
-        alert("Error: " + data);
-      }
-    );
+    )
   }
 
-  // Start the Vuforia plugin
-  public startVuforia(simpleOptions, successCallback?, overlayMessage?, targets?) {
-    var options;
+  //called from UI on click of 'get'
+  public getBook() {
+    console.log("getting book...");
+    this.downloadProgress = 0;
+    this.downloadingBook = true;
 
-    if (typeof overlayMessage == 'undefined')
-      overlayMessage = 'Point your camera at an image...';
+    let loader = this.loadingController.create({
+      content: `<div>Downloading...</div>`,
+      dismissOnPageChange: true
+    });
+    loader.present();
 
-    if (typeof targets == 'undefined')
-      //targets = ['iceland', 'canterbury-grass'];
-      targets = ['abc'];
+    //if user navigates away whil download is in progress - then attempt abort
+    loader.onDidDismiss((data) => {
+      console.log("download loader dismissed");
+      if (!data || !data.operationOver) {
+        console.log("dismissal not normal..abort download operation");
+        this.filesProvider.tryToAbortOperation();
+      }
+    })
 
-    // Reset the matched images
-    this.matchedImages = [];
+    //download book target files(2), book thumbnail
 
-    // Set the global simpleOptions flag
-    this.simpleOptions = simpleOptions;
+    //calc local filenames
+    let xmlfilename: string = this.currentBook.targetXMLUrl.substring(this.currentBook.targetXMLUrl.lastIndexOf("/") + 1);
+    let datfilename: string = this.currentBook.targetDATUrl.substring(this.currentBook.targetDATUrl.lastIndexOf("/") + 1);
+    let imagefilename: string = this.currentBook.imageUrl.substring(this.currentBook.imageUrl.lastIndexOf("/") + 1);
 
-    // Log out wether or not we are using simpleOptions
-    console.log('Simple options: ' + !!this.simpleOptions);
+    if (xmlfilename.substring(0, xmlfilename.lastIndexOf(".")) === datfilename.substring(0, datfilename.lastIndexOf("."))) {
+      //trigger downloads
+      let xmlPromise = this.filesProvider.downloadFile(this.currentBook.targetXMLUrl, xmlfilename);
+      let datPromise = this.filesProvider.downloadFile(this.currentBook.targetDATUrl, datfilename);
+      let imgPromise = this.filesProvider.downloadFile(this.currentBook.imageUrl, imagefilename);
 
-    let file_path = "www/assets/targets/targetB/Test.xml";
-    // Load either simple, or full options
-    if (!!this.simpleOptions) {
-      options = {
-        databaseXmlFile: file_path,
-        targetList: targets,
-        overlayMessage: overlayMessage,
-        vuforiaLicense: this.vuforiaLicense
-      };
-    } else {
-      options = {
-        databaseXmlFile: file_path,
-        targetList: targets,
-        vuforiaLicense: this.vuforiaLicense,
-        overlayMessage: overlayMessage,
-        showDevicesIcon: true,
-        showAndroidCloseButton: true,
-        autostopOnImageFound: false
-      };
+      this.filesProvider.getProgressAsObservable().throttleTime(1000).subscribe(
+        progressPercent => {
+          console.log("download progress: " + progressPercent + "%");
+          if (progressPercent > this.downloadProgress) {
+            console.log("updating progress...")
+            this.downloadProgress = progressPercent;
+          }
+        }
+      )
+
+      Promise.all<string>([xmlPromise, datPromise, imgPromise]).then(
+        localUrls => {
+          loader.dismiss({ operationOver: true });
+          //hack to display the progress bar as full 
+          this.downloadProgress = 100;
+          setTimeout(() => {
+            this.downloadingBook = false;
+          }, 500)
+
+          //make entry in sql with local paths
+          this.saveBookInfo(localUrls[0], localUrls[1], localUrls[2]);
+
+          this.configureVuforiaAndEnableScan(localUrls[0]);
+        },
+        error => {
+          loader.dismiss({ operationOver: true });
+          this.downloadingBook = false;
+          console.log("Error: while getting book: ", error);
+          this.presentInfoAlert("Technical Error", "Cannot process this book at the moment. Please try other books");
+        }
+      )
+    }
+    else {
+      console.error("ERROR: book's target xml and dat files should have same names: ", this.currentBook);
+      loader.dismiss({ operationOver: true });
+      this.downloadingBook = false;
+      this.presentInfoAlert("Technical Error", "Cannot process this book at the moment. Please try other books");
+    }
+  }
+
+  private configureVuforiaAndEnableScan(xmlPath: string) {
+    console.log("configuring vuforia...")
+    if (this.currentBook.pages.length > 0) {
+      let targetList: string[] = [];
+      this.currentBook.pages.forEach((page) => {
+        targetList.push(page.pageId);
+      });
+      //set targetList and target xml path in vuforiaConfig
+      this.vuforiaConfig = {
+        targetXMLPath: xmlPath,
+        targetList: targetList
+      }
+      //set flag to display scan button
+      this.bookAlreadyDownloaded = true;
+      console.log("configured vuforia: ", this.vuforiaConfig);
+    }
+    else {
+      this.presentInfoAlert("Oops!", "No pages found for this book. Please try other books");
     }
 
-    // Start Vuforia with our options
-    (<any>navigator).VuforiaPlugin.startVuforia(
-      options,
-      successCallback || this.vuforiaMatch,
-      function (data) {
-        alert("Error: " + data);
-      }
-    );
   }
 
-  vuforiaMatch = (data) => {
-    // To see exactly what `data` can contain, see 'Success callback `data` API' within the plugin's documentation.
-    console.log(data);
+  private saveBookInfo(xmlLocalUrl: string, datLocalUrl: string, imgLocalUrl: string) {
+    let bookEntity: BookEntity = {
+      bookId: this.currentBook.bookId,
+      title: this.currentBook.title,
+      imageUrl: imgLocalUrl,
+      publisherName: this.currentBook.publisherName,
+      schoolClass: this.currentBook.schoolClass,
+      subject: this.currentBook.subject,
+      targetDATUrl: datLocalUrl,
+      targetXMLUrl: xmlLocalUrl,
+      noOfVideos: this.currentBook.noOfVideos,
+      noOfActivities: this.currentBook.noOfActivities
+    }
 
-    // Have we found an image?
-    if (data.status.imageFound) {
-      // If we are using simple options, alert the image name
-      if (this.simpleOptions) {
-        console.log("Image name: " + data.result.imageName);
-        this.playVideo();
-      } else { // If we are using full options, add the image to an array of images matched
-        this.matchedImages.push(data.result.imageName);
-        this.playSound(); // Play a sound so that the user has some feedback
+    this.sqlProvider.insertBook(bookEntity).then(
+      () => {
+        console.log("book saved successfully: ", bookEntity);
+      },
+      (error) => {
+        console.error("ERROR: book save failed: ", bookEntity, error);
+        this.presentFailureAlert("Technical Error", "Please try again later");
       }
+    )
+  }
+
+  //called from UI on click of 'scan'
+  public scanForImage() {
+    this.sqlProvider.updateLastUsedTime(this.currentBook.bookId).then(
+      () => {
+        console.log("updated last access time on book");
+      }
+    )
+
+    this.startScanTillTimeout();
+  }
+
+  //triggers scanning - camera opens up
+  public startScanTillTimeout() {
+    this.startVuforia();
+
+    console.log('Starting scan timer...');
+
+    // Wait for a timeout, then automatically stop Vuforia
+    setTimeout(() => {
+      if (!this.scanningStopped) {
+        console.log("user has not scanned successfully in " + Constants.OBJECT_SCAN_TIMEOUT_SECONDS + " seconds.. closing");
+        this.stopVuforia();
+      }
+    }, Constants.OBJECT_SCAN_TIMEOUT_SECONDS * 1000);
+  }
+
+
+  // ---- Vuforia code starts ----
+
+  // Start the Vuforia plugin
+  public startVuforia() {
+
+    if (!this.vuforiaConfig || !this.vuforiaConfig.targetXMLPath || !this.vuforiaConfig.targetList || this.vuforiaConfig.targetList.length < 1) {
+      this.presentInfoAlert("Technical Error", "Cannot process this book at the moment. Please try other books");
+    }
+
+    else {
+      let overlayMessage: string = 'Point your camera at a page...';
+
+      let options = {
+        databaseXmlFile: this.vuforiaConfig.targetXMLPath,
+        targetList: this.vuforiaConfig.targetList,
+        overlayMessage: overlayMessage,
+        vuforiaLicense: Constants.VUFORIA_LICENSE,
+        showDevicesIcon: true,
+        showAndroidCloseButton: true
+      };
+
+      // Start Vuforia with our options
+      (<any>navigator).VuforiaPlugin.startVuforia(
+        options,
+        (data) => this.vuforiaMatch(data),
+        (error) => {
+          this.presentFailureAlert("Technical Error", "Please try again later");
+          console.log("Error: could not start vuforia: ", error);
+        }
+      );
+    }
+  }
+
+  //vuforia event handler - triggered when scanning stops
+  vuforiaMatch(data) {
+    console.log("Scan over: ", data);
+    this.scanningStopped = true;
+    //vuforia triggers this handler even when we stop it via code with imageName as ERROR - we don't want to process that
+    if (data.status.imageFound && data.result.imageName != "ERROR") {
+      console.log("Found Image : " + data.result.imageName);
+      this.saveAndPlayMedia(data.result.imageName);
     }
     // Are we manually closing?
     else if (data.status.manuallyClosed) {
       // Let the user know they've manually closed Vuforia
-      alert("User manually closed Vuforia!");
-
-      // If we've matched any images, tell the user what we found
-      if (this.matchedImages.length) {
-        alert("Found:\n" + this.matchedImages);
-      }
+      console.log("User manually closed Vuforia!");
     }
   }
   // Stop the Vuforia plugin
   public stopVuforia() {
-    (<any>navigator).VuforiaPlugin.stopVuforia(function (data) {
-      console.log(data);
+    (<any>navigator).VuforiaPlugin.stopVuforia((data) => {
+      console.log("vuforia stopped: ", data);
 
       if (data.success == 'true') {
-        alert('TOO SLOW! You took too long to find an image.');
+        this.presentInfoAlert("Too Slow!", "You took too long to scan a page.");
       } else {
-        alert('Couldn\'t stop Vuforia\n' + data.message);
+        console.log('Couldn\'t stop Vuforia properly\n' + data.message);
       }
-    }, function (data) {
-      console.log("Error stopping Vuforia:\n" + data);
+    }, (error) => {
+      console.log("Error stopping Vuforia:\n", error);
     });
   }
 
-  //play video if image match found
-  playVideo() {
+  // ---- Vuforia code ends ----
 
-    let img_path = this.file.applicationDirectory + "www/assets/videos/SampleVideo5mb.mp4";
-    
-    console.log("orientation before video: " + this.screenOrientation.type);
-    console.log("playing video at: ", img_path);
-    let iab = this.iab.create(img_path, "_blank", "location=no,hidden=yes");
+  private saveAndPlayMedia(detectedPageId: string) {
+
+    let loader = this.loadingController.create({
+      content: "Loading page media...",
+      dismissOnPageChange: true
+    });
+    loader.present();
+
+    this.sqlProvider.getPages(this.currentBook.bookId).then(
+      (savedPages: PageEntity[]) => {
+
+        let mediaUrl: string = null;
+
+        //if page is already saved
+        for (let page of savedPages) {
+          if (page.pageId == detectedPageId) {
+            mediaUrl = page.contentUrl;
+            break;
+          }
+        }
+
+        //load media from local store
+        if (mediaUrl) {
+          console.log("page media already downloaded. Playing from: " + mediaUrl);
+          loader.dismiss({ operationOver: true });
+          this.openMedia(mediaUrl);
+        }
+        else {
+          //download media, save entry in db and then load media
+          console.log("page not downloaded yet. downloading and saving content");
+
+          //get page
+          let currentPage: Page;
+          for (let pageOfBook of this.currentBook.pages) {
+            if (detectedPageId == pageOfBook.pageId) {
+              currentPage = pageOfBook;
+              break;
+            }
+          }
+          if (currentPage) {
+            this.getPage(currentPage, loader);
+
+          }
+          else {
+            //should not happen
+            console.error(`ERROR: cannot find page detected in pages of book. PageId: {} \nBook: {}`, detectedPageId, this.currentBook);
+          }
+
+        }
+      },
+      error => {
+        loader.dismiss({ operationOver: true });
+        this.presentFailureAlert("Technical Error", "Please try again later");
+      }
+    )
+  }
+
+  private getPage(currentPage: Page, loader: Loading) {
+    //if user navigates away whil download is in progress - then attempt abort
+    loader.onDidDismiss((data) => {
+      console.log("download loader dismissed");
+      if (!data || !data.operationOver) {
+        console.log("dismissal not normal..abort download operation");
+        this.filesProvider.tryToAbortOperation();
+      }
+    })
+    //download page content file, page thumbnail
+
+    //calc local filenames
+    let contentfilename: string = currentPage.contentUrl.substring(currentPage.contentUrl.lastIndexOf("/") + 1);
+    let imagefilename: string = currentPage.imageUrl.substring(currentPage.imageUrl.lastIndexOf("/") + 1);
+
+    //trigger downloads
+    let contentPromise = this.filesProvider.downloadFile(currentPage.contentUrl, contentfilename);
+    let imgPromise = this.filesProvider.downloadFile(currentPage.imageUrl, imagefilename);
+
+    Promise.all<string>([contentPromise, imgPromise]).then(
+      localUrls => {
+        loader.dismiss({ operationOver: true });
+        //make entry in sql with local paths
+        this.savePageInfo(currentPage, localUrls[0], localUrls[1]);
+
+        this.openMedia(localUrls[0]);
+      },
+      error => {
+        loader.dismiss({ operationOver: true });
+        console.log("Error: while getting page: ", error);
+        this.presentInfoAlert("Technical Error", "Cannot process this page at the moment. Please try other pages");
+      }
+    )
+
+  }
+
+  //opens media with given url in in-app-browser
+  openMedia(mediaUrl: string) {
+
+    console.log("orientation before opening media: " + this.screenOrientation.type);
+    console.log("playing media at: ", mediaUrl);
+    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=yes");
 
     iab.on("loadstop").subscribe(
       () => {
@@ -223,27 +420,93 @@ export class ScanBookPage implements OnInit{
     )
 
   }
-  // Play a bell sound
-  public playSound() {
-    // Where are we playing the sound from?
-    var soundURL = this.getMediaURL("sounds/sound.wav");
 
-    this.myAudio.nativeElement.src = soundURL;
-    this.myAudio.nativeElement.play();
-    (<any>navigator).VuforiaPlugin.startVuforiaTrackers(
-      function () {
-        console.log('Started tracking again')
+  private savePageInfo(page: Page, contentLocalUrl: string, imgLocalUrl: string) {
+    let pageEntity: PageEntity = {
+      bookId: page.bookId,
+      pageId: page.pageId,
+      imageUrl: imgLocalUrl,
+      contentUrl: contentLocalUrl,
+      contentType: page.contentType
+    }
+
+    this.sqlProvider.insertPage(pageEntity).then(
+      () => {
+        console.log("page saved successfully: ", pageEntity);
       },
-      function () {
-        console.log('Could not start tracking again')
+      (error) => {
+        console.error("ERROR: page save failed: ", pageEntity);
+        this.presentFailureAlert("Technical Error", "Please try again later");
       }
-    );
-  }
-  // Get the correct media URL for both Android and iOS
-  public getMediaURL(s) {
-    if (this.platform.is("android")) return "/android_asset/www/" + s;
-    return s;
+    )
   }
 
 
+  presentFailureAlert(title: string, message: string) {
+    if (this.deviceProvider.checkNetworkDisconnected()) {
+      this.presentOfflineAlert();
+    }
+    else {
+      let alert = this.alertCtrl.create({
+        title: title,
+        message: message,
+        buttons: [
+          {
+            text: "OK",
+            role: "cancel",
+            handler: () => {
+              if (this.platform.is('android')) {
+                this.platform.exitApp();
+              }
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+  }
+
+  presentInfoAlert(title: string, message: string) {
+    if (this.deviceProvider.checkNetworkDisconnected()) {
+      this.presentOfflineAlert();
+    } else {
+      let alert = this.alertCtrl.create({
+        title: title,
+        message: message,
+        buttons: [
+          {
+            text: "OK",
+            role: "cancel"
+          }
+        ]
+      });
+      alert.present();
+    }
+  }
+
+  presentOfflineAlert() {
+    let alert = this.alertCtrl.create({
+      title: "Device Offline",
+      subTitle: "A connection to internet is required to use this section. Please connect to a Wi-Fi or cellular network.",
+      buttons: [
+        {
+          text: "OK",
+          role: "cancel",
+          handler: () => {
+            //select 'my-books' tab (tab have 0 based indexes)
+            this.navCtrl.parent.select(1);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  public isBookDownloaded(): boolean {
+    return this.bookAlreadyDownloaded;
+  }
+
+  public bookLoadInProgress(): boolean {
+    return this.downloadingBook;
+  }
 }

@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-navbar color="secondary">
+        <ion-title>My pages</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div *ngIf="noPagesMessage">
+        <b>You don't have any content for this book yet! Scan a page to get content!!!</b>
+        <button block ion-button class="btn" (click)="scanBook()" *ngIf="deviceOnline">Scan</button>
+    </div>
+    <ion-grid>
+        <ion-row>
+            <ng-container *ngFor="let page of myPages">
+                <ion-col col-6>
+                    <ion-card>
+                        <img [src]="page.imageUrl" (click)="openMedia(page)">
+                        <button block ion-button class="btn" (click)="confirmDeletion([page])">Delete</button>
+                    </ion-card>
+                </ion-col>
+            </ng-container>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

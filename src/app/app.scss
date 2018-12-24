@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,3 +12,85 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+ion-content {
+    color: #fff !important;
+}
+
+.content {
+    background: #ec4e64 url(../assets/img/mobile-app-bg.png) no-repeat bottom center;
+    background-size: cover;
+}
+
+// .content {
+//     background-image: linear-gradient(#ea5d30, #ec4a73);
+// }
+.btn {
+    background-image: linear-gradient(to bottom right, #8BC34A, #00BCD4);
+    margin-bottom: 10px;
+    padding: 22px 0 !important;
+}
+
+.skipBtn {
+    background-image: linear-gradient(#ec4a72, #eb505d);
+    padding: 22px 0 !important;
+}
+
+button {
+    border-radius: 7px !important;
+}
+
+ion-card {
+    margin: 0 !important;
+    width: 100% !important;
+    border-radius: 7px !important;
+    color: #000 !important;
+}
+
+.tabbar {
+    background: transparent !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.item {
+    padding: 0 !important;
+    border-top: 0 !important;
+}
+
+.item-inner {
+    border-bottom: 0.55px solid #c8c7cc !important;
+    color: #000;
+}
+
+.btnMrg {
+    margin-top: 30px !important;
+}
+
+h4 {
+    text-align: center;
+}
+
+ion-card-content {
+    padding: 10px !important;
+}
+
+.grid {
+    padding: 0 !important;
+}
+
+img {
+    height: auto;
+}
+
+ion-title,
+.tab-button-text,
+button {
+    text-transform: uppercase !important;
+}
+
+.back-button {
+    text-transform: capitalize !important;
+}
+
+.toolbar {
+    min-height: 50px;
+}

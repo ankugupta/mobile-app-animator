@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar color="secondary">
+        <ion-title>
+            Login
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding class="login">
+    <h4>Login to access the App!!!</h4>
+    <ion-card>
+        <ion-card-content>
+            <form>
+                <ion-list>
+                    <ion-item>
+                        <ion-label floating>Username</ion-label>
+                        <ion-input type="text"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>Password</ion-label>
+                        <ion-input type="password"></ion-input>
+                    </ion-item>
+
+                </ion-list>
+                <button class="btnMrg btn" ion-button block type="submit">  Login  </button>
+            </form>
+        </ion-card-content>
+    </ion-card>
+    <button class="btnMrg" ion-button block outline color="light" (click)="goToResetPassword()">Forgot Password</button><br>
+    <div class="orTxt">OR</div>
+    <p> <span>Don't have an account?</span> <a (click)="goToSignup()">Sign Up</a></p>
+    <!-- button class="btnMrg" ion-button block outline (click)="goToRunActivity()">Run</button -->
+</ion-content>

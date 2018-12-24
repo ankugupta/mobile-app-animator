@@ -1,18 +1,37 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Book Details</ion-title>
-  </ion-navbar>
+    <ion-navbar color="secondary">
+        <ion-title>Book Details</ion-title>
+    </ion-navbar>
 </ion-header>
+<ion-content padding>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-5 class="padL0">
+                <ion-card>
+                    <ion-card-content>
+                        <img [src]="currentBook?.imageUrl" />
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-col col-7>
+                <h3>{{currentBook?.title}}</h3>
+                <p>{{currentBook?.publisherName}}</p>
+                <button *ngIf="!isBookDownloaded() && !bookLoadInProgress()" class="btn" (click)="getBook()" ion-button type="button" block>Get This Book</button>
+                <button *ngIf="isBookDownloaded() && !bookLoadInProgress()" class="btn" (click)="scanForImage()" ion-button type="button" block>Scan This Book</button>
+                <!-- Display progress bar while downloading books -->
+                <progress-bar *ngIf="bookLoadInProgress()" [progress]="downloadProgress"></progress-bar>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
-<ion-content [ngClass]="{ 'hideContent':scanning, 'showContent': !scanning}">
-
-  <ion-card>
-    <ion-card-content>
-      <img [src]="currentBook.imageUrl" height="300px"/>
-      <br>
-      <button (click)="scanForImage()" ion-button type="button" color="danger" block>Scan page on book</button>
-      
-    </ion-card-content>
-  </ion-card>
-
+    <ion-grid class="hightlights">
+        <ion-row>
+            <!-- TODO: display proper values-->
+            <ion-col><span>{{currentBook?.schoolClass}}</span> Class </ion-col>
+            <ion-col><span><img src="assets/img/book_name_bg.jpg"></span> Subject </ion-col>
+            <ion-col *ngIf="currentBook?.noOfVideos > 0"><span>{{currentBook?.noOfVideos}}</span> Videos </ion-col>
+            <ion-col *ngIf="currentBook?.noOfActivities > 0"><span>{{currentBook?.noOfActivities}}</span> Activities </ion-col>
+        </ion-row>
+    </ion-grid>
+    <!-- <button block ion-button color="dark">More UKG Books</button> -->
 </ion-content>
