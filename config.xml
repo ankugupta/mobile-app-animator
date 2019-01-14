@@ -21,6 +21,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
+        <hook src="scripts/update_build_gradle.js" type="before_build" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -40,6 +41,8 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+        <preference name="APP_SECRET" value="e3d888aa-ac3c-434f-b35f-354259b2c658" />
+        <preference name="APPCENTER_CRASHES_ALWAYS_SEND" value="true" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -90,5 +93,7 @@
     <plugin name="cordova-plugin-file-transfer" spec="1.7.1" />
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
+    <plugin name="cordova-plugin-appcenter-crashes" spec="0.2.2" />
+    <plugin name="cordova-plugin-appcenter-analytics" spec="0.2.2" />
     <engine name="android" spec="7.1.4" />
 </widget>

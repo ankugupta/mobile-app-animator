@@ -27,8 +27,8 @@
     <ion-grid class="hightlights">
         <ion-row>
             <!-- TODO: display proper values-->
-            <ion-col><span>{{currentBook?.schoolClass}}</span> Class </ion-col>
-            <ion-col><span><img src="assets/img/book_name_bg.jpg"></span> Subject </ion-col>
+            <ion-col><span tappable (click)="goBackToSearch('class')">{{currentBook?.schoolClass}}</span> Class </ion-col>
+            <ion-col><span tappable (click)="goBackToSearch('subject')">{{currentBook?.subject}}</span> Subject </ion-col>
             <ion-col *ngIf="currentBook?.noOfVideos > 0"><span>{{currentBook?.noOfVideos}}</span> Videos </ion-col>
             <ion-col *ngIf="currentBook?.noOfActivities > 0"><span>{{currentBook?.noOfActivities}}</span> Activities </ion-col>
         </ion-row>

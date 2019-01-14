@@ -1,4 +1,4 @@
-1) OLDER ISSUE - Resolved since with cordova-android version 7.4:
+1) OLDER ISSUE - Resolved since with cordova-android version 7.1.4:
 	app runs with cordova-android version 6.4. This is due to change in structure of platform code generated from cordova-android 7 onwards.
 	cordova-vuforia-plugin needs to be updated to handle this new structure and can be taken up as an enhancement. 
 	During build phase, use the following command:
@@ -13,3 +13,14 @@
 	b. run npm install to install dependencies
 	c. build plugin using npm run-script build
 	d. ionic cordova plugin add {local path to plugin directory}
+
+3) to check logs: adb logcat ActivityManager:I CordovaVuforiaPlugin:D ImageTargets:V *:S
+
+4) since the cordova-vuforia-plugin only provides libVuforia.so for armeabi-v7a, we cannot support arm64-v8 (64 bit architecture). 
+   Hence, abi filter is used to configure the APK build to skip arm64-v8.
+   Details- this issue is caused since android phones support multiple architectures (armeabi etc.). Native libraries (.so files) are compiled differently 
+   for each abi. If your APK has any .so built for arm64, and the phone primarily supports arm64, the other .so files(if any) will not be installed by the package
+   manager. In this app, sql's .so is availabe for arm64 which was causing .so of vuforia (armeabi-v7a) to be skipped from installtion on phones that support arm64. 
+   FUTURE Imporvement: Since the cordova-vuforia-plugin is not being updated anymore and uses an older version of vuforia engine, it is not possible to simply get the 
+   .so for the older vuforia engine since it is no longer availabe on the official repo. The way forward is to update the engine used by the plugin, test if everything still
+   works fine, and then use the update plugin (with arm64-v8 abi support). This will become mandatory in the year 2019.

@@ -28,7 +28,7 @@ export class ScanProvider {
     private sqlProvider: SqlStorageProvider) {
   }
 
-  public configureVuforiaAndStartScan(book: Book, xmlPath: string){
+  public configureVuforiaAndStartScan(book: Book, xmlPath: string) {
     this.currentBook = book;
 
     console.log("configuring vuforia...")
@@ -103,7 +103,12 @@ export class ScanProvider {
         options,
         (data) => this.vuforiaMatch(data),
         (error) => {
-          this.presentFailureAlert("Technical Error", "Please try again later");
+          if (error == "CAMERA_PERMISSION_ERROR") {
+            this.presentInfoAlert("Permission Required", "Please 'allow' access to camera to use this feature");
+          }
+          else {
+            this.presentFailureAlert("Technical Error", "Please try again later");
+          }
           console.log("Error: could not start vuforia: ", error);
         }
       );

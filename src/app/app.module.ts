@@ -15,6 +15,8 @@ import { SQLite } from '@ionic-native/sqlite';
 import { Device } from '@ionic-native/device';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { Network } from '@ionic-native/network';
+import { AppCenterCrashes } from '@ionic-native/app-center-crashes';
+import { AppCenterAnalytics } from '@ionic-native/app-center-analytics';
 
 //pages - all other pages are lazy loaded via their own modules
 import { MyApp } from './app.component';
@@ -57,6 +59,8 @@ import { ComponentsModule } from '../components/components.module';
     Device,
     FileTransfer,
     Network,
+    AppCenterCrashes,
+    AppCenterAnalytics,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     DataProvider,
     BooksProvider,

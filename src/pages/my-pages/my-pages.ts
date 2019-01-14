@@ -120,7 +120,8 @@ export class MyPagesPage {
         }
 
         if (this.myPages.length == 0) {
-          this.noPagesMessage = true;
+          //if no pages left, transition back to previous page
+          this.navCtrl.pop();
         }
       },
       error => {
@@ -150,10 +151,6 @@ export class MyPagesPage {
         console.log("orientation after browser close: " + this.screenOrientation.type);
       }
     )
-  }
-
-  public scanBook() {
-    this.navCtrl.push("ScanBookPage", { bookId: this.currentBookId });
   }
 
   presentFailureAlert(title: string, message: string) {

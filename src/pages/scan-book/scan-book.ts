@@ -6,6 +6,7 @@ import { Book } from '../../model/book';
 import { BookEntity } from "../../model/bookEntity";
 import { BooksProvider } from '../../providers/books.provider';
 import * as Constants from '../../app/app.constants';
+import * as PageConstants from '../pages.constants';
 import { FilesProvider } from '../../providers/files.provider';
 import { SqlStorageProvider } from '../../providers/sql-storage.provider';
 import { PageEntity } from '../../model/pageEntity';
@@ -224,6 +225,7 @@ export class ScanBookPage {
     this.startScanTillTimeout();
   }
 
+  //TODO: use code from scan provider and delete from here
   //triggers scanning - camera opens up
   public startScanTillTimeout() {
     this.startVuforia();
@@ -266,7 +268,12 @@ export class ScanBookPage {
         options,
         (data) => this.vuforiaMatch(data),
         (error) => {
-          this.presentFailureAlert("Technical Error", "Please try again later");
+          if (error == "CAMERA_PERMISSION_ERROR") {
+            this.presentInfoAlert("Permission Required", "Please 'allow' access to camera to use this feature");
+          }
+          else {
+            this.presentFailureAlert("Technical Error", "Please try again later");
+          }
           console.log("Error: could not start vuforia: ", error);
         }
       );
@@ -500,6 +507,17 @@ export class ScanBookPage {
       ]
     });
     alert.present();
+  }
+
+  public goBackToSearch(filter: string) {
+
+    if (filter == 'class') {
+      this.navCtrl.setRoot(PageConstants.SEARCH_BOOKS_PAGE, { filters: { class: this.currentBook.schoolClass } });
+    }
+
+    if (filter == 'subject') {
+      this.navCtrl.setRoot(PageConstants.SEARCH_BOOKS_PAGE, { filters: { subject: this.currentBook.subject } });
+    }
   }
 
   public isBookDownloaded(): boolean {
