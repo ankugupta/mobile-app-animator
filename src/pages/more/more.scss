@@ -1,9 +1,9 @@
-page-more,
-more-detail-page {
+page-more {
     .item,
     .item-inner {
         background: transparent;
         color: #fff;
+        border-bottom: 0.55px solid rgba(255, 255, 255, 0.29) !important;
     }
     .item-block:last-child {
         border-bottom: 0 !important;
@@ -13,5 +13,8 @@ more-detail-page {
     }
     ion-icon {
         margin: 0px 16px 0px 0;
+    }
+    .activated {
+        background: rgba(0, 0, 0, 0.17) !important;
     }
 }
