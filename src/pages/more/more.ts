@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { NavController, NavParams, IonicPage } from "ionic-angular";
-import * as PageConstants from "../pages.constants";
+import { NavController, IonicPage } from "ionic-angular";
+import * as PageConstants from "../pages.constants"
 
 @IonicPage()
 @Component({
@@ -8,37 +8,19 @@ import * as PageConstants from "../pages.constants";
   templateUrl: "more.html"
 })
 export class MorePage {
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-  ) { }
+  constructor(public nav: NavController) {}
 
-  details = [
-    {
-      title: "About Us",
-      icon: "md-information",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut sodales nunc. Morbi finibus ante viverra, auctor nisi quis, eleifend est. Etiam imperdiet, velit eget varius auctor, metus metus sodales augue, eu hendrerit elit leo vel lectus."
-    },
-    {
-      title: "Help",
-      icon: "md-help",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut sodales nunc. Morbi finibus ante viverra, auctor nisi quis, eleifend est. Etiam imperdiet, velit eget varius auctor, metus metus sodales augue, eu hendrerit elit leo vel lectus."
-    },
-    {
-      title: "FAQ's",
-      icon: "md-chatboxes",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut sodales nunc. Morbi finibus ante viverra, auctor nisi quis, eleifend est. Etiam imperdiet, velit eget varius auctor, metus metus sodales augue, eu hendrerit elit leo vel lectus."
-    }
-  ];
-
-  openMoreDetailsPage(detail) {
-    this.navCtrl.push(PageConstants.MORE_DETAIL_PAGE, { detail: detail });
-  }
+  openAboutUsPage() {
+    this.nav.push(PageConstants.ABOUTUS_PAGE);
+  };
+  openHelpPage() {
+    this.nav.push(PageConstants.HELP_PAGE);
+  };
+  openFaqPage() {
+    this.nav.push(PageConstants.FAQ_PAGE);
+  };
 
   logMeOut() {
-    this.navCtrl.parent.parent.setRoot(PageConstants.WELCOME_PAGE);
+    this.nav.parent.parent.setRoot(PageConstants.WELCOME_PAGE);
   };
-}
+ }

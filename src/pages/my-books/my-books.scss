@@ -11,8 +11,9 @@ page-my-books {
         padding: 10px !important;
     }
     button {
-        margin: 0 !important;
-        border-radius: 0 !important;
+        height: 50px !important;
+        width: 80% !important;
+        margin: auto !important;
     }
     .scanBtn {
         width: 100%;
@@ -25,7 +26,6 @@ page-my-books {
         font-weight: 500;
         text-transform: uppercase;
     }
-
     .pagesBtn {
         width: 100%;
         height: 20%;
@@ -36,5 +36,10 @@ page-my-books {
         font-size: 15px;
         font-weight: 500;
         text-transform: uppercase;
+    }
+    .notBookAvailable {
+        text-align: center;
+        font-size: 40px;
+        font-weight: 100;
     }
 }
