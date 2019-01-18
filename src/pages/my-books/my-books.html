@@ -15,8 +15,16 @@
                     <ion-card>
                         <button class="scanBtn" *ngIf="deviceOnline" (click)="scanBook(book)">Scan</button>
                         <img [src]="book.imageUrl">
-                        <button block ion-button class="btn" *ngIf="book.pageCount > 0" (click)="showPages(book)">Pages</button>
-                        <button block ion-button class="btn" (click)="confirmDeletion(book)">Delete</button>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col col-8>
+                                    <button class="showPages" ion-button block *ngIf="book.pageCount > 0" (click)="showPages(book)">Pages</button>
+                                </ion-col>
+                                <ion-col col-4>
+                                    <button class="deleteBtn" ion-button color="danger" clear (click)="confirmDeletion(book)"><ion-icon ios="ios-trash" md="md-trash"></ion-icon></button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
                     </ion-card>
                 </ion-col>
             </ng-container>
