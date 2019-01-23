@@ -123,6 +123,11 @@
 }
 
 page-scan-book {
+    ion-card img {
+        display: block !important;
+        width: 100%;
+        border-radius: 16px;
+    }
     ion-card-content {
         padding: 0px !important;
     }
@@ -181,5 +186,9 @@ page-scan-book {
                 height: 100%;
             }
         }
+    }
+    .btnBottom {
+        position: absolute;
+        bottom: 0;
     }
 }

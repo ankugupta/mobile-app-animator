@@ -1,0 +1,17 @@
+page-help {
+    .swiper-slide {
+        display: inline;
+        img {
+            bottom: -20px;
+            position: relative;
+        }
+    }
+    .scroll-content {
+        background-image: linear-gradient(rgba(21, 53, 80, 0.38823529411764707), rgba(234, 136, 136, 0.68), #c74464) !important;
+        padding: 0 17px;
+    }
+    .swiper-pagination-bullet-active {
+        background: #ff9ea3;
+        opacity: 1;
+    }
+}

@@ -1,4 +1,11 @@
 page-my-books {
+    ion-card {
+        background: #324d5c !important;
+        color: #fff !important;
+        img {
+            display: block !important;
+        }
+    }
     .card {
         margin: 0;
         width: 100%;
@@ -10,22 +17,25 @@ page-my-books {
     .scroll-content {
         padding: 10px !important;
     }
-    button {
-        margin: 0 !important;
-        border-radius: 0 !important;
-    }
+    // button {
+    //     height: 50px !important;
+    //     width: 80% !important;
+    //     margin: auto !important;
+    // }
     .scanBtn {
-        width: 100%;
-        height: 20%;
+        width: 92% !important;
+        height: 20% !important;
         position: absolute;
         border-radius: 3px 3px 0 0 !important;
-        background: rgba(255, 255, 255, 0.71);
-        color: #000;
+        background: rgba(0, 150, 136, 0.83);
+        color: #fff;
         font-size: 15px;
-        font-weight: 500;
-        text-transform: uppercase;
+        font-weight: 700;
+        text-transform: uppercase !important;
+        bottom: 50%;
+        left: 8px;
+        border: solid 1px #00ffe7;
     }
-
     .pagesBtn {
         width: 100%;
         height: 20%;
@@ -36,5 +46,22 @@ page-my-books {
         font-size: 15px;
         font-weight: 500;
         text-transform: uppercase;
+    }
+    .notBookAvailable {
+        text-align: center;
+        font-size: 40px;
+        font-weight: 100;
+    }
+    .col {
+        text-align: center !important;
+    }
+    .showPages {
+        background-image: linear-gradient(to bottom right, #8BC34A, #00BCD4) !important;
+        color: #fff !important;
+    }
+    .deleteBtn {
+        font-size: 21px !important;
+        color: #fff !important;
+        padding: 0 !important;
     }
 }

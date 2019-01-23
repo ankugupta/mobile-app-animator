@@ -16,8 +16,8 @@
             <ion-col col-7>
                 <h3>{{currentBook?.title}}</h3>
                 <p>{{currentBook?.publisherName}}</p>
-                <button *ngIf="!isBookDownloaded() && !bookLoadInProgress()" class="btn" (click)="getBook()" ion-button type="button" block>Get This Book</button>
-                <button *ngIf="isBookDownloaded() && !bookLoadInProgress()" class="btn" (click)="scanForImage()" ion-button type="button" block>Scan This Book</button>
+                <button *ngIf="!isBookDownloaded() && !bookLoadInProgress()" class="btn btnBottom" (click)="getBook()" ion-button type="button" block>Get This Book</button>
+                <button *ngIf="isBookDownloaded() && !bookLoadInProgress()" class="btn btnBottom" (click)="scanForImage()" ion-button type="button" block>Scan This Book</button>
                 <!-- Display progress bar while downloading books -->
                 <progress-bar *ngIf="bookLoadInProgress()" [progress]="downloadProgress"></progress-bar>
             </ion-col>

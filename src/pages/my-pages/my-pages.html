@@ -13,11 +13,19 @@
                 <ion-col col-6>
                     <ion-card>
                         <img [src]="page.imageUrl" tappable (click)="openMedia(page)">
-                        <button block ion-button class="btn" (click)="confirmDeletion([page])">Delete</button>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col col-6 class="pageNumber">
+                                    Page-5
+                                </ion-col>
+                                <ion-col col-6>
+                                    <button class="deleteBtn" ion-button color="danger" clear (click)="confirmDeletion([page])"><ion-icon ios="ios-trash" md="md-trash"></ion-icon></button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
                     </ion-card>
                 </ion-col>
             </ng-container>
         </ion-row>
     </ion-grid>
-
 </ion-content>

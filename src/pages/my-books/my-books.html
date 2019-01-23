@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content padding>
     <div *ngIf="noBooksMessage">
-        <b>You don't have any books yet! Get one now!!!</b>
+        <p class="notBookAvailable">You don't have any books yet! Get one now!!!</p>
         <button block ion-button class="btn" (click)="goToSearchTab()" *ngIf="deviceOnline">Search Books</button>
     </div>
     <ion-grid>
@@ -15,12 +15,19 @@
                     <ion-card>
                         <button class="scanBtn" *ngIf="deviceOnline" (click)="scanBook(book)">Scan</button>
                         <img [src]="book.imageUrl">
-                        <button block ion-button class="btn" *ngIf="book.pageCount > 0" (click)="showPages(book)">Pages</button>
-                        <button block ion-button class="btn" (click)="confirmDeletion(book)">Delete</button>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col col-8>
+                                    <button class="showPages" ion-button block *ngIf="book.pageCount > 0" (click)="showPages(book)">Pages</button>
+                                </ion-col>
+                                <ion-col col-4>
+                                    <button class="deleteBtn" ion-button color="danger" clear (click)="confirmDeletion(book)"><ion-icon ios="ios-trash" md="md-trash"></ion-icon></button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
                     </ion-card>
                 </ion-col>
             </ng-container>
         </ion-row>
     </ion-grid>
-
 </ion-content>
