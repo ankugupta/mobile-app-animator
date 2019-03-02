@@ -6,7 +6,7 @@
 <ion-content padding>
     <ion-grid>
         <ion-row>
-            <ion-col col-5 class="padL0">
+            <ion-col col-5>
                 <ion-card>
                     <ion-card-content>
                         <img [src]="currentBook?.imageUrl" />
@@ -27,10 +27,29 @@
     <ion-grid class="hightlights">
         <ion-row>
             <!-- TODO: display proper values-->
-            <ion-col><span tappable (click)="goBackToSearch('class')">{{currentBook?.schoolClass}}</span> Class </ion-col>
-            <ion-col><span tappable (click)="goBackToSearch('subject')">{{currentBook?.subject}}</span> Subject </ion-col>
-            <ion-col *ngIf="currentBook?.noOfVideos > 0"><span>{{currentBook?.noOfVideos}}</span> Videos </ion-col>
-            <ion-col *ngIf="currentBook?.noOfActivities > 0"><span>{{currentBook?.noOfActivities}}</span> Activities </ion-col>
+            <ion-col>
+                <div class="classBg">
+                    <span tappable (click)="goBackToSearch('class')">{{currentBook?.schoolClass}}</span> Class
+                </div>
+            </ion-col>
+            <ion-col>
+                <div class="subjectBg">
+                    <span tappable (click)="goBackToSearch('subject')">{{currentBook?.subject}}</span> Subject
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <!-- TODO: display proper values-->
+            <ion-col *ngIf="currentBook?.noOfVideos > 0">
+                <div class="videosBg">
+                    <span>{{currentBook?.noOfVideos}}</span> Videos
+                </div>
+            </ion-col>
+            <ion-col *ngIf="currentBook?.noOfActivities > 0">
+                <div class="activitiesBg">
+                    <span>{{currentBook?.noOfActivities}}</span> Activities
+                </div>
+            </ion-col>
         </ion-row>
     </ion-grid>
     <!-- <button block ion-button color="dark">More UKG Books</button> -->
