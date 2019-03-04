@@ -6,7 +6,7 @@
 <ion-content padding>
     <div *ngIf="noBooksMessage">
         <p class="notBookAvailable">You don't have any books yet! Get one now!!!</p>
-        <button block ion-button class="btn" (click)="goToSearchTab()" *ngIf="deviceOnline">Search Books</button>
+        <button color="primary" block ion-button (click)="goToSearchTab()" *ngIf="deviceOnline">Search Books</button>
     </div>
     <ion-grid>
         <ion-row>

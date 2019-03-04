@@ -34,11 +34,9 @@ login {
     }
     a {
         font-size: 17px;
-        border: solid 1px #fff;
         padding: 10px 36px;
         border-radius: 7px;
         margin-left: 10px;
-        color: #fff;
     }
     p {
         text-align: center;
@@ -50,6 +48,6 @@ login {
         font-size: 24px;
     }
     ion-card {
-        box-shadow: 0px 13px 10px rgba(0, 0, 0, 0.21) !important;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1) !important;
     }
 }
