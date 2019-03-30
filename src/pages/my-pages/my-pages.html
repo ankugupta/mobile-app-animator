@@ -16,7 +16,7 @@
                         <ion-grid>
                             <ion-row>
                                 <ion-col col-6 class="pageNumber">
-                                    Page-5
+                                    {{ getPageNumber(page.pageId) }}
                                 </ion-col>
                                 <ion-col col-6>
                                     <button class="deleteBtn" ion-button color="danger" clear (click)="confirmDeletion([page])"><ion-icon ios="ios-trash" md="md-trash"></ion-icon></button>

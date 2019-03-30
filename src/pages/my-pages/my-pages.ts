@@ -64,6 +64,11 @@ export class MyPagesPage {
     )
   }
 
+  // called from UI
+  public getPageNumber(pageId: string) {
+    return pageId.substring(pageId.lastIndexOf("P") + 1);
+  }
+
   //called from UI
   //TODO: enhancement - support selecting multiple pages for deletion on UI
   public confirmDeletion(pages: PageEntity[]) {
