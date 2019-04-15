@@ -13,14 +13,20 @@
             <ng-container *ngFor="let book of myBooks">
                 <ion-col col-6 *ngIf="deviceOnline || book.pageCount > 0">
                     <ion-card>
-                        <button class="scanBtn" *ngIf="deviceOnline" (click)="scanBook(book)">Scan</button>
-                        <img [src]="book.imageUrl">
+                        <div class="bookThumb">
+                            <img [src]="book.imageUrl">
+                        </div>
                         <ion-grid>
                             <ion-row>
-                                <ion-col col-8>
+                                <ion-col col-3>
+                                    <button class="scanBtn" *ngIf="deviceOnline" (click)="scanBook(book)">
+                                            <img src="assets/img/scan_icon.png">
+                                        </button>
+                                </ion-col>
+                                <ion-col col-6 class="borderCol">
                                     <button class="showPages" ion-button block *ngIf="book.pageCount > 0" (click)="showPages(book)">Pages</button>
                                 </ion-col>
-                                <ion-col col-4>
+                                <ion-col col-3>
                                     <button class="deleteBtn" ion-button color="danger" clear (click)="confirmDeletion(book)"><ion-icon ios="ios-trash" md="md-trash"></ion-icon></button>
                                 </ion-col>
                             </ion-row>

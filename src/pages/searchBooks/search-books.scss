@@ -3,13 +3,23 @@ page-search-books {
         padding: 10px !important;
     }
     p {
-        margin: 8px 0 !important;
+        margin: 15px 6px !important;
         font-size: 16px !important;
         text-align: center;
         font-weight: 500;
         text-transform: capitalize;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     ion-card-content {
         padding: 0px !important;
+    }
+    .bookThumb {
+        height: 220px;
+        overflow: hidden;
+    }
+    .card {
+        background: #efefef !important;
     }
 }
