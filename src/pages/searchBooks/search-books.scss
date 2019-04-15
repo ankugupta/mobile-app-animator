@@ -13,4 +13,8 @@ page-search-books {
     ion-card-content {
         padding: 0px !important;
     }
+    .bookThumb {
+        height: 220px;
+        overflow: hidden;
+    }
 }
