@@ -63,7 +63,7 @@ export class MyApp {
             this.nav.setRoot(PageConstants.MY_BOOKS_PAGE)
           }
           else {
-            this.nav.setRoot(PageConstants.WELCOME_PAGE);
+            this.nav.setRoot(PageConstants.TABS_PAGE);
           }
         }
 
