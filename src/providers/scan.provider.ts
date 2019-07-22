@@ -58,7 +58,56 @@ export class ScanProvider {
       }
     )
 
-    this.startScanTillTimeout();
+    this.sqlProvider.getARWarningMsgPreference().then(showMsg => {
+      if (showMsg === 1) {
+        let hideMessage: boolean = false;
+        let alert = this.alertCtrl.create({
+          title: Constants.AR_WARNING_TITLE,
+          message: Constants.AR_WARNING_MSG,
+          inputs: [
+            {
+              name: 'hideMessage',
+              type: 'checkbox',
+              label: 'Do not show this again',
+              checked: false,
+              value: 'fake',
+              handler: (checkBox) => {
+                console.log(checkBox);
+                // handle checkbox event - use the boolean later to update preference
+                if (checkBox.checked) {
+                  hideMessage = true;
+                }
+                else {
+                  hideMessage = false;
+                }
+              }
+
+            }
+          ],
+          buttons: [
+            {
+              text: "OK",
+              role: "submit",
+              handler: () => {
+                setTimeout(() => {
+                  this.startScanTillTimeout();                  
+                }, 0);
+                if (hideMessage) {
+                  console.log('user has asked to hide message');
+                  this.sqlProvider.updateARWarningMsgPreference().then(() => {
+                    console.log('user pref updated');
+                  })
+                }
+                return true;
+              }
+            }
+          ]
+        });
+        alert.present();
+      } else {
+        this.startScanTillTimeout();
+      }
+    });
   }
 
   //triggers scanning - camera opens up

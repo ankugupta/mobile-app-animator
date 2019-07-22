@@ -316,6 +316,22 @@ export class SqlStorageProvider {
     });
   }
 
+  public updateARWarningMsgPreference() : Promise<any> {
+    return this.query("UPDATE userpreference SET showARWarning = ?", [0]);
+  }
+
+  public getARWarningMsgPreference(): Promise<any> {
+    return this.query("SELECT showARWarning FROM userpreference").then(
+      data => {
+        if (data.res.rows.length > 0) {
+          return data.res.rows.item(0).showARWarning;
+        }
+      },
+      error => {
+        console.error("ERROR in getARWarningMsgPreference" + error);
+      });
+  }
+
   public updateLastUsedTime(bookId: string): Promise<any> {
     let now: number = new Date().getTime();
     console.log("updating last used time for " + bookId);
@@ -390,6 +406,15 @@ export class SqlStorageProvider {
         query: 'CREATE TABLE IF NOT EXISTS mypages (' +
           'pageId text, bookId text, imageUrl text, contentType text, contentUrl text)',
         params: []
+      },
+      {
+        query: 'CREATE TABLE IF NOT EXISTS userpreference (' +
+          'showARWarning integer)',
+        params: []
+      },
+      {
+        query: 'INSERT INTO userpreference(showARWarning) values (?)',
+        params: [1]
       }
     ]);
   }
