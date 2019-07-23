@@ -43,6 +43,20 @@ export class FilesProvider {
     })
   }
 
+  public checkIfExists(filename: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.file.checkFile(this.file.dataDirectory, filename)
+      .then(exists => resolve(exists))
+      .catch(() => {
+        console.log("in catch of checkIfExists");
+        resolve(false)
+      })
+    });
+  }
+
+  public getFilePath(filename: string): string {
+    return this.file.dataDirectory + filename;
+  }
   /**
    * This 'tries' to abort on-going operation
    * since the operation might already have been completed

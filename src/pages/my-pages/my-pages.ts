@@ -95,9 +95,27 @@ export class MyPagesPage {
   public deletePages(pages: PageEntity[]) {
 
     let deletePromises: Promise<RemoveResult>[] = [];
-    for (let page of pages) {
-      deletePromises.push(this.file.removeFile(this.file.dataDirectory, page.imageUrl.substring(page.imageUrl.lastIndexOf("/") + 1)));
-      deletePromises.push(this.file.removeFile(this.file.dataDirectory, page.contentUrl.substring(page.contentUrl.lastIndexOf("/") + 1)));
+
+    let pageIdsForDeletion = new Set<string>();
+    //calculate data for helping in deletion 
+    for (let j = 0; j < pages.length; j++) {
+      pageIdsForDeletion.add(pages[j].pageId);
+      //delete image file of page
+      deletePromises.push(this.file.removeFile(this.file.dataDirectory, pages[j].imageUrl.substring(pages[j].imageUrl.lastIndexOf("/") + 1)));
+    }
+
+    //delete content file of page iff no other page exists that has the same content and is not marked for deletion
+    for (let i = 0; i < pages.length; i++) {
+      let anotherPageWithSameContentExists = false;
+      for (let j = 0; j < this.myPages.length; j++) {
+        if (this.myPages[j].contentUrl == pages[i].contentUrl && !pageIdsForDeletion.has(this.myPages[j].pageId)) {
+          anotherPageWithSameContentExists = true;
+          break;
+        }
+      }
+      if (!anotherPageWithSameContentExists) {
+        deletePromises.push(this.file.removeFile(this.file.dataDirectory, pages[i].contentUrl.substring(pages[i].contentUrl.lastIndexOf("/") + 1)));
+      }
     }
 
     Promise.all(deletePromises).then(
@@ -114,13 +132,11 @@ export class MyPagesPage {
     this.sqlProvider.deletePages(pages).then(
       () => {
         console.log("deleted pages: ", pages);
-        //delete page from view list 
-        for (var j = 0; j < pages.length; j++) {
-          for (var i = this.myPages.length - 1; i >= 0; i--) {
-            if (this.myPages[i].pageId == pages[j].pageId) {
-              this.myPages.splice(i, 1);
-              break;
-            }
+        //delete pages from view list 
+        for (let i = this.myPages.length - 1; i >= 0; i--) {
+          if (pageIdsForDeletion.has(this.myPages[i].pageId)) {
+            this.myPages.splice(i, 1);
+            break;
           }
         }
 

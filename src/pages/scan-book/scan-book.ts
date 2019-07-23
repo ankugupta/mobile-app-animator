@@ -254,7 +254,7 @@ export class ScanBookPage {
               role: "submit",
               handler: () => {
                 setTimeout(() => {
-                  this.startScanTillTimeout();                  
+                  this.startScanTillTimeout();
                 }, 0);
                 if (hideMessage) {
                   console.log('user has asked to hide message');
@@ -433,25 +433,41 @@ export class ScanBookPage {
     let contentfilename: string = currentPage.contentUrl.substring(currentPage.contentUrl.lastIndexOf("/") + 1);
     let imagefilename: string = currentPage.imageUrl.substring(currentPage.imageUrl.lastIndexOf("/") + 1);
 
-    //trigger downloads
-    let contentPromise = this.filesProvider.downloadFile(currentPage.contentUrl, contentfilename);
-    let imgPromise = this.filesProvider.downloadFile(currentPage.imageUrl, imagefilename);
+    //if content file already downloaded (a content file may be associated with multiple pages) - then,
+    //do not download again
+    let contentFileAlreadyExists = false;
+    this.filesProvider.checkIfExists(contentfilename)
+      .then(exists => {
+        if (exists) {
+          contentFileAlreadyExists = true;
+        }
+        //if content file already downloaded  
+        let contentPromise = Promise.resolve(this.filesProvider.getFilePath(contentfilename));
 
-    Promise.all<string>([contentPromise, imgPromise]).then(
-      localUrls => {
-        loader.dismiss({ operationOver: true });
-        //make entry in sql with local paths
-        this.savePageInfo(currentPage, localUrls[0], localUrls[1]);
+        //trigger downloads
+        if (!contentFileAlreadyExists) {
+          contentPromise = this.filesProvider.downloadFile(currentPage.contentUrl, contentfilename);
+        }
+        let imgPromise = this.filesProvider.downloadFile(currentPage.imageUrl, imagefilename);
 
-        this.openMedia(localUrls[0]);
-      },
-      error => {
-        loader.dismiss({ operationOver: true });
-        console.log("Error: while getting page: ", error);
-        this.presentInfoAlert("Technical Error", "Cannot process this page at the moment. Please try other pages");
-      }
-    )
+        Promise.all<string>([contentPromise, imgPromise]).then(
+          localUrls => {
+            loader.dismiss({ operationOver: true });
+            //make entry in sql with local paths
+            this.savePageInfo(currentPage, localUrls[0], localUrls[1]);
 
+            this.openMedia(localUrls[0]);
+          },
+          error => {
+            loader.dismiss({ operationOver: true });
+            console.log("Error: while getting page: ", error);
+            this.presentInfoAlert("Technical Error", "Cannot process this page at the moment. Please try other pages");
+          }
+        )
+      })
+      .catch(() => {
+        // do nothing
+      });
   }
 
   //opens media with given url in in-app-browser
