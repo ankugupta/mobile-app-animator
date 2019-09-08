@@ -206,6 +206,8 @@ export class ScanBookPage {
     this.sqlProvider.insertBook(bookEntity).then(
       () => {
         console.log("book saved successfully: ", bookEntity);
+        console.log("book saved successfully: imageUrl ", bookEntity.imageUrl);
+        console.log("book saved successfully: targetXML: ", bookEntity.targetXMLUrl);
       },
       (error) => {
         console.error("ERROR: book save failed: ", bookEntity, error);
@@ -475,15 +477,15 @@ export class ScanBookPage {
 
     console.log("orientation before opening media: " + this.screenOrientation.type);
     console.log("playing media at: ", mediaUrl);
-    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=yes");
-
-    iab.on("loadstop").subscribe(
-      () => {
-        console.log("loadstop fired!");
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-        iab.show();
-      }
-    )
+    let iab = this.iab.create(mediaUrl, "_blank", "location=yes,hidden=no");
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+    // iab.on("loadstop").subscribe(
+    //   () => {
+    //     console.log("loadstop fired!");
+    //     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+    //     iab.show();
+    //   }
+    // )
     iab.on("exit").subscribe(
       () => {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
@@ -504,7 +506,7 @@ export class ScanBookPage {
 
     this.sqlProvider.insertPage(pageEntity).then(
       () => {
-        console.log("page saved successfully: ", pageEntity);
+        console.log(`new page saved successfully: ${pageEntity}`);
       },
       (error) => {
         console.error("ERROR: page save failed: ", pageEntity);

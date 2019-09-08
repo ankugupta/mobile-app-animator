@@ -8,6 +8,8 @@ import { PageEntity } from '../../model/pageEntity';
 import * as PageConstants from '../pages.constants';
 import { BooksProvider } from '../../providers/books.provider';
 import { ScanProvider } from '../../providers/scan.provider';
+import { normalizeURL} from 'ionic-angular';
+
 
 @IonicPage()
 @Component({
@@ -40,6 +42,11 @@ export class MyBooksPage {
     this.loadBooks();
     this.deviceOnline = !this.deviceProvider.checkNetworkDisconnected();
   }
+public getUrl(imageUrl){
+  let nUrl =normalizeURL(imageUrl);
+  console.log("normalize url: " + nUrl);
+  return nUrl;
+}
 
   private loadBooks() {
 
