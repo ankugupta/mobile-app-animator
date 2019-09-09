@@ -475,9 +475,8 @@ export class ScanBookPage {
   //opens media with given url in in-app-browser
   openMedia(mediaUrl: string) {
 
-    console.log("orientation before opening media: " + this.screenOrientation.type);
     console.log("playing media at: ", mediaUrl);
-    let iab = this.iab.create(mediaUrl, "_blank", "location=yes,hidden=no");
+    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=no");
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
     // iab.on("loadstop").subscribe(
     //   () => {

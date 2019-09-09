@@ -7,6 +7,7 @@ import { File, RemoveResult } from '@ionic-native/file';
 import { DeviceProvider } from '../../providers/device.provider';
 import { SqlStorageProvider } from '../../providers/sql-storage.provider';
 import { PageEntity } from '../../model/pageEntity';
+import { normalizeURL } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -39,6 +40,12 @@ export class MyPagesPage {
     this.loadPages(this.currentBookId);
 
     this.deviceOnline = !this.deviceProvider.checkNetworkDisconnected();
+  }
+
+  public getUrl(imageUrl) {
+    let nUrl = normalizeURL(imageUrl);
+    console.log("normalize url: " + nUrl);
+    return nUrl;
   }
 
   private loadPages(currentBookId: string) {
@@ -173,6 +180,8 @@ export class MyPagesPage {
       }
     )
   }
+
+
 
   presentFailureAlert(title: string, message: string) {
     let alert = this.alertCtrl.create({

@@ -306,19 +306,18 @@ export class ScanProvider {
   }
 
   //opens media with given url in in-app-browser
-  private openMedia(mediaUrl: string) {
+  openMedia(mediaUrl: string) {
 
-    console.log("orientation before opening media: " + this.screenOrientation.type);
     console.log("playing media at: ", mediaUrl);
-    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=yes");
-
-    iab.on("loadstop").subscribe(
-      () => {
-        console.log("loadstop fired!");
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-        iab.show();
-      }
-    )
+    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=no");
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+    // iab.on("loadstop").subscribe(
+    //   () => {
+    //     console.log("loadstop fired!");
+    //     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+    //     iab.show();
+    //   }
+    // )
     iab.on("exit").subscribe(
       () => {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);

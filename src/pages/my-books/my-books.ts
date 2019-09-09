@@ -8,7 +8,7 @@ import { PageEntity } from '../../model/pageEntity';
 import * as PageConstants from '../pages.constants';
 import { BooksProvider } from '../../providers/books.provider';
 import { ScanProvider } from '../../providers/scan.provider';
-import { normalizeURL} from 'ionic-angular';
+import { normalizeURL } from 'ionic-angular';
 
 
 @IonicPage()
@@ -42,11 +42,12 @@ export class MyBooksPage {
     this.loadBooks();
     this.deviceOnline = !this.deviceProvider.checkNetworkDisconnected();
   }
-public getUrl(imageUrl){
-  let nUrl =normalizeURL(imageUrl);
-  console.log("normalize url: " + nUrl);
-  return nUrl;
-}
+  
+  public getUrl(imageUrl) {
+    let nUrl = normalizeURL(imageUrl);
+    console.log("normalize url: " + nUrl);
+    return nUrl;
+  }
 
   private loadBooks() {
 
@@ -73,7 +74,7 @@ public getUrl(imageUrl){
       }
     )
 
-    
+
   }
 
   public goToSearchTab() {
@@ -96,7 +97,7 @@ public getUrl(imageUrl){
       bookdetails => {
         let bookDetails = bookdetails;
         console.log("book details loaded: ", bookDetails);
-        this.scanProvider.configureVuforiaAndStartScan(bookDetails, book.targetXMLUrl);        
+        this.scanProvider.configureVuforiaAndStartScan(bookDetails, book.targetXMLUrl);
       },
       error => {
         console.log("error while fetching book details ", error);
