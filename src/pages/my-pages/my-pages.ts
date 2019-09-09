@@ -159,26 +159,25 @@ export class MyPagesPage {
   }
 
   //called from UI
-  //opens media with given url in in-app-browser
-  public openMedia(page: PageEntity) {
+  openMedia(mediaUrl: string) {
 
-    console.log("orientation before opening media: " + this.screenOrientation.type);
-    console.log("playing media at: ", page.contentUrl);
-    let iab = this.iab.create(page.contentUrl, "_blank", "location=no,hidden=yes");
-
-    iab.on("loadstop").subscribe(
-      () => {
-        console.log("loadstop fired!");
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-        iab.show();
-      }
-    )
+    console.log("playing media at: ", mediaUrl);
+    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=no");
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+    // iab.on("loadstop").subscribe(
+    //   () => {
+    //     console.log("loadstop fired!");
+    //     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+    //     iab.show();
+    //   }
+    // )
     iab.on("exit").subscribe(
       () => {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
         console.log("orientation after browser close: " + this.screenOrientation.type);
       }
     )
+
   }
 
 
