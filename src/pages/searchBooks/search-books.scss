@@ -18,6 +18,9 @@ page-search-books {
     .bookThumb {
         height: 220px;
         overflow: hidden;
+        img {
+            height: 100% !important;
+        }
     }
     .card {
         background: #efefef !important;
