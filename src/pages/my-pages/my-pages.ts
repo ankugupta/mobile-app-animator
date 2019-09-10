@@ -159,10 +159,10 @@ export class MyPagesPage {
   }
 
   //called from UI
-  openMedia(mediaUrl: string) {
+  openMedia(page: PageEntity) {
 
-    console.log("playing media at: ", mediaUrl);
-    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=no");
+    console.log("playing media at: ", page.contentUrl);
+    let iab = this.iab.create(page.contentUrl, "_blank", "location=no,hidden=no");
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
     // iab.on("loadstop").subscribe(
     //   () => {
