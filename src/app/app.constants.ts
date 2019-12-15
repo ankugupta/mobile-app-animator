@@ -1,7 +1,7 @@
-export const API_ENDPOINT = "http://ec2-13-232-69-230.ap-south-1.compute.amazonaws.com/animator";
+export const API_ENDPOINT = "http://ec2-15-206-51-194.ap-south-1.compute.amazonaws.com:8081/animator";
 //export const API_ENDPOINT = "http://localhost:9988/animator";
 export const PUBLISHER = "Pub0002_BerryGarden";
-//http://ec2-13-232-69-230.ap-south-1.compute.amazonaws.com/animator/publisher/P2/books
+//http://ec2-15-206-51-194.ap-south-1.compute.amazonaws.com/animator/publisher/P2/books
 export const BOOKS_URI = API_ENDPOINT + "/publisher/" + PUBLISHER + "/books";
 export const API_VERSION = "v1";
 export const OBJECT_SCAN_TIMEOUT_SECONDS = 60; 
