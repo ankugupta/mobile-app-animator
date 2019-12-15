@@ -1,6 +1,6 @@
-export const API_ENDPOINT = "http://ec2-13-232-69-230.ap-south-1.compute.amazonaws.com/animator";
+export const API_ENDPOINT = "http://ec2-15-206-51-194.ap-south-1.compute.amazonaws.com:8081/animator";
 //export const API_ENDPOINT = "http://localhost:9988/animator";
-export const PUBLISHER = "Pub0002_BerryGarden";
+export const PUBLISHER = "Pub0001_Harish";
 //http://ec2-13-232-69-230.ap-south-1.compute.amazonaws.com/animator/publisher/P2/books
 export const BOOKS_URI = API_ENDPOINT + "/publisher/" + PUBLISHER + "/books";
 export const API_VERSION = "v1";

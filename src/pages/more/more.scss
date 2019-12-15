@@ -1,4 +1,8 @@
 page-more {
+    .item,
+    .item-inner {
+        background: transparent;
+    }
     .item-block:last-child {
         border-bottom: 0 !important;
     }
@@ -10,5 +14,9 @@ page-more {
     }
     .activated {
         background: rgba(0, 0, 0, 0.17) !important;
+    }
+    .item-inner {
+        border-bottom: 0.55px solid rgba(0, 0, 0, 0.21) !important;
+        color: #000;
     }
 }
