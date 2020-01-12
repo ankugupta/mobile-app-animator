@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-navbar color="secondary">
+        <ion-title>Jugnu Kids</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <div *ngIf="noVideosMessage">
+        <p class="notVideoAvailable">Oops! No videos to watch right now... Try again after some time</p>
+    </div>
+
+    <ion-card *ngFor="let video of videoList">
+        <p>{{video.title}}</p>
+        <div class="videoThumb">
+            <img [src]="video.thumbUrl | normalized">
+        </div>
+        <button ion-button full large (click)="openMedia(video.mediaUrl)">Play video</button>
+    </ion-card>
+
+
+</ion-content>

@@ -20,7 +20,6 @@ export class MyApp {
     screenOrientation: ScreenOrientation,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    deviceProvider: DeviceProvider,
     sqldb: SqlStorageProvider
   ) {
 
@@ -37,14 +36,10 @@ export class MyApp {
             screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
           }
           splashScreen.hide();
-          //TODO: update navigation: show welcome page only if user is not logged in
-          //no internet -> show only offline content page
-          if (deviceProvider.checkNetworkDisconnected()) {
-            this.nav.setRoot(PageConstants.MY_BOOKS_PAGE)
-          }
-          else {
-            this.nav.setRoot(PageConstants.TABS_PAGE);
-          }
+
+          //navigate to home page
+          this.nav.setRoot(PageConstants.HOME_PAGE);
+          
         }
 
       });

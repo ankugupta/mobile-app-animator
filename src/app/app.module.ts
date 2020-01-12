@@ -29,6 +29,7 @@ import { ScanProvider } from '../providers/scan.provider';
 
 //custom modules
 import { ComponentsModule } from '../components/components.module';
+import { JugnuVideosProvider } from '../providers/jugnu-videos.provider';
 
 
 
@@ -63,7 +64,8 @@ import { ComponentsModule } from '../components/components.module';
     SqlStorageProvider,
     DeviceProvider,
     FilesProvider,
-    ScanProvider
+    ScanProvider,
+    JugnuVideosProvider
   ]
 })
 export class AppModule { }

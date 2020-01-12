@@ -1,0 +1,17 @@
+jugnu-videos {
+    video {
+        width: 100%;
+    }
+    .notVideoAvailable {
+        text-align: center;
+        font-size: 40px;
+        font-weight: 100;
+    }
+    .videoThumb {
+        height: 220px;
+        overflow: hidden;
+        img {
+            height: 100%;
+        }
+    }
+}
