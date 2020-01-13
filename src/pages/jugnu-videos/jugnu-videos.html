@@ -2,12 +2,11 @@
     <ion-navbar color="secondary">
         <ion-title>Jugnu Kids</ion-title>
         <ion-buttons end>
-            <button (click)="goToHome()">
-                Home
+            <button ion-button icon-only (click)="goToHome()">
+              <ion-icon name="home"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
-
 </ion-header>
 
 
@@ -15,14 +14,17 @@
     <div *ngIf="noVideosMessage">
         <p class="notVideoAvailable">Oops! No videos to watch right now... Try again after some time</p>
     </div>
-
     <ion-card *ngFor="let video of videoList">
-        <p>{{video.title}}</p>
         <div class="videoThumb">
+            <a (click)="openMedia(video.mediaUrl)">
+
+                <ion-icon name="play"></ion-icon>
+
+            </a>
             <img [src]="video.thumbUrl | normalized">
         </div>
-        <button ion-button full large (click)="openMedia(video.mediaUrl)">Play video</button>
+        <p>{{video.title}}</p>
+
+
     </ion-card>
-
-
 </ion-content>
