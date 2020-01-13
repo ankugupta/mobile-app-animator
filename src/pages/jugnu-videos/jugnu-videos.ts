@@ -1,5 +1,5 @@
 import {
-    AlertController, IonicPage, LoadingController, Platform
+    AlertController, IonicPage, LoadingController, NavController, Platform
 } from 'ionic-angular';
 
 import { Component } from '@angular/core';
@@ -9,6 +9,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { Video } from '../../model/video';
 import { DeviceProvider } from '../../providers/device.provider';
 import { JugnuVideosProvider } from '../../providers/jugnu-videos.provider';
+import * as PageConstants from '../../pages/pages.constants';
 
 @IonicPage()
 @Component({
@@ -21,6 +22,7 @@ export class JugnuVideosPage {
   noVideosMessage: boolean;
 
   constructor(private platform: Platform,
+    private navCtrl: NavController,
     private alertCtrl: AlertController,
     private loadingController: LoadingController,
     private deviceProvider: DeviceProvider,
@@ -86,6 +88,10 @@ export class JugnuVideosPage {
       }
     )
 
+  }
+
+  goToHome() {
+    this.navCtrl.setRoot(PageConstants.HOME_PAGE);
   }
 
   
