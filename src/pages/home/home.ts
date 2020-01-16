@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { DeviceProvider } from '../../providers/device.provider';
+
+import { Component } from '@angular/core';
+
 import * as PageConstants from '../../pages/pages.constants';
+import { DeviceProvider } from '../../providers/device.provider';
 
 /**
  * Root landing page of the app - user can either choose to use berry garden or jugnu feature
@@ -13,8 +15,8 @@ import * as PageConstants from '../../pages/pages.constants';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, 
-    public navParams: NavParams, 
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
     public deviceProvider: DeviceProvider) {
   }
 
@@ -23,8 +25,8 @@ export class HomePage {
     if (this.deviceProvider.checkNetworkDisconnected()) {
       this.navCtrl.setRoot(PageConstants.MY_BOOKS_PAGE)
     }
-    else{
-      this.navCtrl.setRoot(PageConstants.TABS_PAGE);
+    else {
+      this.navCtrl.setRoot(PageConstants.BOOK_FILTER_PAGE, { "openedAsRoot": true });
     }
   }
 
