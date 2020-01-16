@@ -26,20 +26,18 @@
 
     <ion-grid class="hightlights">
         <ion-row>
-            <!-- TODO: display proper values-->
             <ion-col>
                 <div class="classBg">
-                    <span tappable (click)="goBackToSearch('class')">{{currentBook?.schoolClass}}</span> Class
+                    <span>{{currentBook?.schoolClass}}</span> Class
                 </div>
             </ion-col>
             <ion-col>
                 <div class="subjectBg">
-                    <span tappable (click)="goBackToSearch('subject')">{{currentBook?.subject}}</span> Subject
+                    <span>{{currentBook?.subject}}</span> Subject
                 </div>
             </ion-col>
         </ion-row>
         <ion-row>
-            <!-- TODO: display proper values-->
             <ion-col *ngIf="currentBook?.noOfVideos > 0">
                 <div class="videosBg">
                     <span>{{currentBook?.noOfVideos}}</span> Videos

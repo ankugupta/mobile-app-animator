@@ -38,8 +38,8 @@ export class MyApp {
           splashScreen.hide();
 
           //navigate to home page
-          this.nav.setRoot(PageConstants.BERRY_GARDEN_PAGE);
-          
+          this.nav.setRoot(PageConstants.BOOK_FILTER_PAGE, { "openedAsRoot": true });
+
         }
 
       });

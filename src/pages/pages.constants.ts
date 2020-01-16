@@ -1,6 +1,6 @@
 //Constants for getting type references
 export const TABS_PAGE = 'TabsPage';
-export const BERRY_GARDEN_PAGE = 'BerryGardenPage';
+export const BOOK_FILTER_PAGE = 'BookFilterPage';
 export const WELCOME_PAGE = 'WelcomePage';
 export const SIGNUP_PAGE = 'SignupPage';
 export const LOGIN_PAGE = 'LoginPage';
