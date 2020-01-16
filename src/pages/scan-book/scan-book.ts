@@ -575,17 +575,6 @@ export class ScanBookPage {
     alert.present();
   }
 
-  public goBackToSearch(filter: string) {
-
-    if (filter == 'class') {
-      this.navCtrl.setRoot(PageConstants.SEARCH_BOOKS_PAGE, { filters: { class: this.currentBook.schoolClass } });
-    }
-
-    if (filter == 'subject') {
-      this.navCtrl.setRoot(PageConstants.SEARCH_BOOKS_PAGE, { filters: { subject: this.currentBook.subject } });
-    }
-  }
-
   public isBookDownloaded(): boolean {
     return this.bookAlreadyDownloaded;
   }
