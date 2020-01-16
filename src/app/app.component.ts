@@ -38,7 +38,7 @@ export class MyApp {
           splashScreen.hide();
 
           //navigate to home page
-          this.nav.setRoot(PageConstants.HOME_PAGE);
+          this.nav.setRoot(PageConstants.BERRY_GARDEN_PAGE);
           
         }
 
