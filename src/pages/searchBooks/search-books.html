@@ -2,10 +2,11 @@
     <ion-navbar color="secondary">
         <ion-title>{{filters.class}} Books</ion-title>
         <ion-buttons end>
-            <button (click)="goToBookFilterPage()">
-                Filter
+            <button ion-button icon-only color="royal" (click)="goToBookFilterPage()">
+              <ion-icon name="options"></ion-icon>
             </button>
         </ion-buttons>
+
     </ion-navbar>
     <ion-searchbar #searchBar color="primary" placeholder="Search with book name" (ionInput)="filterBooksByTitle($event)"></ion-searchbar>
 </ion-header>
