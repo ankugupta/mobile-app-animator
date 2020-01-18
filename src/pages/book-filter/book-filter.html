@@ -1,16 +1,11 @@
 <ion-header>
-
     <ion-navbar color="secondary">
         <ion-title>Select Class</ion-title>
     </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
-
     <!-- TODO: highlight current selected class -->
-    <button ion-button full large *ngFor="let schoolClass of schoolClassList"
-        (click)="setClassFilter(schoolClass)">{{ schoolClass }}</button>
-
+    <button ion-button full large *ngFor="let schoolClass of schoolClassList" (click)="setClassFilter(schoolClass)" [ngClass]="{'activeBtn': schoolClass==currentClass}">{{ schoolClass }}</button>
 </ion-content>

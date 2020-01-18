@@ -1,3 +1,15 @@
-page-book-filter {
-
+book-filter {
+    ion-content {
+        button {
+            height: 100px !important;
+            border-radius: 5px !important;
+            margin-bottom: 10px !important;
+            background-color: #d1dcb2 !important;
+            color: #616b45 !important;
+        }
+        .activeBtn {
+            background: #98b649 !important;
+            color: #fff !important;
+        }
+    }
 }
