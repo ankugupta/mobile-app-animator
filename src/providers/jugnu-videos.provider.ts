@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
+import { Injectable } from '@angular/core';
+
 import * as Constants from '../app/app.constants';
-import { DataProvider } from './data.provider';
 import { Result } from '../model/response';
-import { Book } from '../model/book';
 import { Video } from '../model/video';
+import { DataProvider } from './data.provider';
 
 @Injectable()
 export class JugnuVideosProvider {
