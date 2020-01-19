@@ -1,5 +1,5 @@
 //angular
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -30,6 +30,7 @@ import { ScanProvider } from '../providers/scan.provider';
 //custom modules
 import { ComponentsModule } from '../components/components.module';
 import { JugnuVideosProvider } from '../providers/jugnu-videos.provider';
+import { MasterDataProvider } from '../providers/master-data.provider';
 
 
 
@@ -65,7 +66,16 @@ import { JugnuVideosProvider } from '../providers/jugnu-videos.provider';
     DeviceProvider,
     FilesProvider,
     ScanProvider,
-    JugnuVideosProvider
+    JugnuVideosProvider,
+    MasterDataProvider,
+    { provide: APP_INITIALIZER, useFactory: masterDataProviderFactory, deps: [MasterDataProvider], multi: true }
   ]
 })
 export class AppModule { }
+
+/**
+ * factory provider for APP_INITIALIZER - for loading master data
+ */
+export function masterDataProviderFactory(provider: MasterDataProvider) {
+  return () => provider.load();
+}

@@ -1,17 +1,20 @@
+import {
+  AlertController, IonicPage, Loading, LoadingController, NavController, NavParams, Platform
+} from 'ionic-angular';
+
 import { Component } from '@angular/core';
-import { Platform, NavParams, NavController, LoadingController, AlertController, Loading, IonicPage } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
-import { Book } from '../../model/book';
-import { BookEntity } from "../../model/bookEntity";
-import { BooksProvider } from '../../providers/books.provider';
+
 import * as Constants from '../../app/app.constants';
-import * as PageConstants from '../pages.constants';
+import { Book } from '../../model/book';
+import { BookEntity } from '../../model/bookEntity';
+import { Page } from '../../model/page';
+import { PageEntity } from '../../model/pageEntity';
+import { BooksProvider } from '../../providers/books.provider';
+import { DeviceProvider } from '../../providers/device.provider';
 import { FilesProvider } from '../../providers/files.provider';
 import { SqlStorageProvider } from '../../providers/sql-storage.provider';
-import { PageEntity } from '../../model/pageEntity';
-import { Page } from '../../model/page';
-import { DeviceProvider } from '../../providers/device.provider';
 
 @IonicPage()
 @Component({

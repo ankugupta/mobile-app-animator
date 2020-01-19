@@ -7,6 +7,7 @@ import * as Constants from '../app/app.constants';
 import { Book } from '../model/book';
 import { Result } from '../model/response';
 import { DataProvider } from './data.provider';
+import { MasterDataProvider } from './master-data.provider';
 
 @Injectable()
 export class BooksProvider {
@@ -20,7 +21,7 @@ export class BooksProvider {
   bookSectionFirstInit = true;
 
 
-  constructor(public data: DataProvider) {
+  constructor(public data: DataProvider, public masterDataProvider: MasterDataProvider) {
   }
 
   /**
@@ -40,6 +41,18 @@ export class BooksProvider {
         this.booksCache.push(book);
         this.schoolClassSet.add(book.schoolClass);
       });
+
+      //sort books cache by class and title
+      let classOrderMap: Map<string, number> = this.masterDataProvider.getMasterRecord(Constants.MD_TYPE_CLASS_ORDERING);
+      this.booksCache = this.booksCache.sort((a, b) => {
+        if (classOrderMap.get(a.schoolClass) - classOrderMap.get(b.schoolClass) != 0) {
+          return classOrderMap.get(a.schoolClass) - classOrderMap.get(b.schoolClass);
+        }
+        let textA = a.title.toUpperCase();
+        let textB = b.title.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      });
+
       return result;
     });
   }
@@ -83,10 +96,10 @@ export class BooksProvider {
     this.bookSectionFirstInit = isFirstInit;
   }
 
-  public setClassFilterNextVal(nextVal: string){
+  public setClassFilterNextVal(nextVal: string) {
     this.classFilterSubject.next(nextVal);
   }
-  
+
   public getClassFilterAsObservable(): Observable<string> {
     return this.classFilterSubject.asObservable();
   }
@@ -94,6 +107,12 @@ export class BooksProvider {
   public getSchoolClassList(): string[] {
     let classList: string[] = [];
     this.schoolClassSet.forEach(schoolClass => classList.push(schoolClass));
-    return classList;
+
+    //sort the list of classes and return
+    let classOrderMap: Map<string, number> = this.masterDataProvider.getMasterRecord(Constants.MD_TYPE_CLASS_ORDERING);
+    return classList.sort((a, b) => {
+      return classOrderMap.get(a) - classOrderMap.get(b);
+    });
+
   }
 }
