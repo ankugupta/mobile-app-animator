@@ -101,16 +101,10 @@ export class SearchBooksPage {
         (subjectFilter == "all" || item.subject == subjectFilter) &&
         (!searchFilter || !searchFilter.trim() || item.title.toLowerCase().includes(searchFilter.toLowerCase()))
 
-    }).sort((a,b) => {
-      if(a.schoolClass == b.schoolClass) return 0;
-      if(a.schoolClass.toLowerCase() == "nursery" && (b.schoolClass.toLowerCase() == "lkg" || b.schoolClass.toLowerCase() == "ukg")) return -1;
-      if(a.schoolClass.toLowerCase() == "lkg" && b.schoolClass.toLowerCase() == "ukg") return -1;
-      
     });
   }
 
   public filterBooksByTitle(ev: any) {
-    console.log("filter by title fired!!!!!!!");
     this.filters.searchbar = ev.target.value;
     this.filterBooks();
   }

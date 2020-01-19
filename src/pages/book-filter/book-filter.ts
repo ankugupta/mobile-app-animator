@@ -1,8 +1,12 @@
+import {
+  AlertController, IonicPage, LoadingController, NavController, NavParams, Platform
+} from 'ionic-angular';
+
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Platform } from 'ionic-angular';
+
+import { BooksProvider } from '../../providers/books.provider';
 import { DeviceProvider } from '../../providers/device.provider';
 import * as PageConstants from '../pages.constants';
-import { BooksProvider } from '../../providers/books.provider';
 
 @IonicPage()
 @Component({
@@ -12,7 +16,7 @@ import { BooksProvider } from '../../providers/books.provider';
 export class BookFilterPage {
 
   schoolClassList: string[] = ["all"];
-  currentClass:string;
+  currentClass: string;
 
   constructor(private navCtrl: NavController,
     private platform: Platform,
@@ -28,7 +32,7 @@ export class BookFilterPage {
     if (this.deviceProvider.checkNetworkDisconnected()) {
       this.presentOfflineAlert();
     }
-    else if(this.schoolClassList.length == 1){
+    else if (this.schoolClassList.length == 1) {
       //load books and other data - this page uses only the class data, but other info fetched is required 
       //in other parts of the app
       this.loadBooks();
@@ -40,7 +44,7 @@ export class BookFilterPage {
   //the value of class filter can be updated via this page itself
   //however, to highlight the current filter value next time this page opens,
   //we subscribe to the subject tracking the filter's value
-  subscribeToClassFilterSubject(){
+  subscribeToClassFilterSubject() {
     this.booksProvider.getClassFilterAsObservable().subscribe(classFilter => {
       this.currentClass = classFilter;
     })
@@ -69,11 +73,11 @@ export class BookFilterPage {
 
   setClassFilter(filterVal: string) {
     this.booksProvider.setClassFilterNextVal(filterVal);
-    if(this.navParams.get("openedAsRoot")){
+    if (this.navParams.get("openedAsRoot")) {
       //page is the root view
       this.navCtrl.setRoot(PageConstants.TABS_PAGE);
     }
-    else if(this.navCtrl.canGoBack()){
+    else if (this.navCtrl.canGoBack()) {
       //page is not the root view
       this.navCtrl.pop();
     }
