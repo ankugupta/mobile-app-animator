@@ -17,6 +17,7 @@ export class BookFilterPage {
 
   schoolClassList: string[] = ["all"];
   currentClass: string;
+  openedAsRoot:boolean;
 
   constructor(private navCtrl: NavController,
     private platform: Platform,
@@ -29,6 +30,8 @@ export class BookFilterPage {
   }
 
   ionViewWillEnter() {
+    this.openedAsRoot=this.navParams.get("openedAsRoot");
+
     if (this.deviceProvider.checkNetworkDisconnected()) {
       this.presentOfflineAlert();
     }
@@ -74,11 +77,11 @@ export class BookFilterPage {
   setClassFilter(filterVal: string) {
     this.booksProvider.setClassFilterNextVal(filterVal);
     if (this.navParams.get("openedAsRoot")) {
-      //page is the root view
+      console.log("page is the root view")
       this.navCtrl.setRoot(PageConstants.TABS_PAGE);
     }
     else if (this.navCtrl.canGoBack()) {
-      //page is not the root view
+      console.log("page is not the root view")
       this.navCtrl.pop();
     }
   }

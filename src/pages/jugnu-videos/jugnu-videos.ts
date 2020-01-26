@@ -1,5 +1,5 @@
 import {
-    AlertController, IonicPage, LoadingController, NavController, Platform
+  AlertController, IonicPage, LoadingController, NavController, Platform
 } from 'ionic-angular';
 
 import { Component } from '@angular/core';
@@ -32,13 +32,13 @@ export class JugnuVideosPage {
   }
 
   ionViewWillEnter() {
-     //init variables
-     this.noVideosMessage = false;
+    //init variables
+    this.noVideosMessage = false;
 
     if (this.deviceProvider.checkNetworkDisconnected()) {
       this.presentOfflineAlert();
     }
-    else{
+    else {
       this.loadVideos();
     }
   }
@@ -76,25 +76,29 @@ export class JugnuVideosPage {
 
   //opens media with given url in in-app-browser
   openMedia(mediaUrl: string) {
-
     console.log("playing media at: ", mediaUrl);
-    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=no");
+    let optionString = "location=no,hidden=no";
+    if (this.platform.is("ios")) {
+      optionString = "location=no,hidden=no,usewkwebview=yes";
+      console.log("using options ", optionString);
+    }
+    let iab = this.iab.create(mediaUrl, "_blank", optionString);
+    //let iab = this.iab.create(mediaUrl, "_blank", "usewkwebview=yes");
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-   
+
     iab.on("exit").subscribe(
       () => {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
         console.log("orientation after browser close: " + this.screenOrientation.type);
       }
     )
-
   }
 
   goToHome() {
     this.navCtrl.setRoot(PageConstants.HOME_PAGE);
   }
 
-  
+
   presentOfflineAlert() {
     let alert = this.alertCtrl.create({
       title: "Device Offline",

@@ -39,7 +39,11 @@ export class SearchBooksPage {
     private booksProvider: BooksProvider) {
 
   }
-
+public getPageTitle(currentClass: string){
+  if(currentClass.toLowerCase() == 'nursery') return 'Soft Berry';
+  if(currentClass.toLowerCase() == 'lkg') return 'Sweet Berry';
+  if(currentClass.toLowerCase() == 'ukg') return 'Smart Berry';
+}
   ionViewWillEnter() {
     if (this.deviceProvider.checkNetworkDisconnected()) {
       this.presentOfflineAlert();
@@ -97,7 +101,7 @@ export class SearchBooksPage {
     console.log(`filter books fired with {class: ${classFilter}, subject: ${subjectFilter}, search: ${searchFilter}`);
 
     this.searchedBooks = this.books.filter(function (item) {
-      return (classFilter == "all" || item.schoolClass == classFilter) &&
+      return (classFilter == "all" || item.schoolClass.toLowerCase() == classFilter) &&
         (subjectFilter == "all" || item.subject == subjectFilter) &&
         (!searchFilter || !searchFilter.trim() || item.title.toLowerCase().includes(searchFilter.toLowerCase()))
 
@@ -110,7 +114,9 @@ export class SearchBooksPage {
   }
 
   public goToBookFilterPage() {
-    this.navCtrl.push(PageConstants.BOOK_FILTER_PAGE);
+
+    this.navCtrl.parent.parent.setRoot(PageConstants.BOOK_FILTER_PAGE, { "openedAsRoot": true });
+
   }
 
   public goToBookDetail(book: Book) {
