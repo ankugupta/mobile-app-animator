@@ -309,22 +309,21 @@ export class ScanProvider {
   openMedia(mediaUrl: string) {
 
     console.log("playing media at: ", mediaUrl);
-    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=no");
+    let optionString = "location=no,hidden=no";
+    if (this.platform.is("ios")) {
+      optionString = "location=no,hidden=no,usewkwebview=yes";
+      console.log("using options ", optionString);
+    }
+    let iab = this.iab.create(mediaUrl, "_blank", optionString);
+    //let iab = this.iab.create(mediaUrl, "_blank", "usewkwebview=yes");
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-    // iab.on("loadstop").subscribe(
-    //   () => {
-    //     console.log("loadstop fired!");
-    //     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-    //     iab.show();
-    //   }
-    // )
+
     iab.on("exit").subscribe(
       () => {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
         console.log("orientation after browser close: " + this.screenOrientation.type);
       }
     )
-
   }
 
   private savePageInfo(page: Page, contentLocalUrl: string, imgLocalUrl: string) {
