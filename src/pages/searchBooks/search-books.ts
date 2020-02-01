@@ -19,8 +19,14 @@ export class SearchBooksPage {
 
   books: Book[] = [];
   searchedBooks: Book[] = [];
-  classList: string[] = [];
-  subjectList: string[] = [];
+  classList: string[] = [
+    "hello 01",
+    "hell 02"
+  ];
+  subjectList: string[] = [
+    "hello 01",
+    "hell 02"
+  ];
   filters: { class: string, subject: string, searchbar: string } = {
     class: "all",
     subject: "all",

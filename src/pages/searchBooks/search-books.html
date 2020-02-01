@@ -8,20 +8,31 @@
         </ion-buttons>
 
     </ion-navbar>
-    <ion-searchbar #searchBar color="primary" placeholder="Search with book name" (ionInput)="filterBooksByTitle($event)"></ion-searchbar>
+
 </ion-header>
 
 <ion-content>
-    <!-- <ion-card>
-        class: <ion-select [(ngModel)]="filters.class" (ionChange)="filterBooks()" interface="popover">
-            <ion-option *ngFor="let class of classList">{{class}}</ion-option>
-        </ion-select>
-    </ion-card>
     <ion-card>
-        subject: <ion-select [(ngModel)]="filters.subject" (ionChange)="filterBooks()" interface="popover">
-            <ion-option *ngFor="let subject of subjectList">{{subject}}</ion-option>
-        </ion-select>
-    </ion-card> -->
+        <ion-grid>
+            <ion-row>
+                <ion-col col>
+                    class:
+                    <ion-select [(ngModel)]="filters.class" (ionChange)="filterBooks()" interface="popover">
+                        <ion-option *ngFor="let class of classList">{{class}}</ion-option>
+                    </ion-select>
+                </ion-col>
+                <ion-col col>
+                    subject:
+                    <ion-select [(ngModel)]="filters.subject" (ionChange)="filterBooks()" interface="popover">
+                        <ion-option *ngFor="let subject of subjectList">{{subject}}</ion-option>
+                    </ion-select>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+    </ion-card>
+
+    <ion-searchbar #searchBar color="primary" placeholder="Search with book name" (ionInput)="filterBooksByTitle($event)"></ion-searchbar>
     <ion-grid>
         <ion-row>
             <ion-col col-6 *ngFor="let book of searchedBooks" tappable (click)="goToBookDetail(book)">

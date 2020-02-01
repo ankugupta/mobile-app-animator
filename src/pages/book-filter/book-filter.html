@@ -1,19 +1,11 @@
-<!-- <ion-header *ngIf="!openedAsRoot">
+<ion-header>
     <ion-navbar color="secondary">
         <ion-title>Select Category</ion-title>
     </ion-navbar>
-</ion-header> -->
+</ion-header>
 
 
 <ion-content class="card-background-page" padding>
-    <ion-card>
-        <img src="assets/img/soft-berry.png" (click)="setClassFilter('nursery')" />
-    </ion-card>
-    <ion-card>
-        <img src="assets/img/sweet-berry.png" (click)="setClassFilter('lkg')" />
-    </ion-card>
-    <ion-card>
-        <img src="assets/img/smart-berry.png" (click)="setClassFilter('ukg')" />
-    </ion-card>
-    <!-- <button *ngFor="let schoolClass of schoolClassList" (click)="setClassFilter(schoolClass)" [ngClass]="{'activeBtn': schoolClass==currentClass}">{{ schoolClass }}</button> -->
+
+    <button *ngFor="let schoolClass of schoolClassList" (click)="setClassFilter(schoolClass)" [ngClass]="{'activeBtn': schoolClass==currentClass}">{{ schoolClass }}</button>
 </ion-content>
