@@ -5,7 +5,8 @@
 </ion-header>
 
 
-<ion-content class="card-background-page" padding>
+<ion-content padding>
 
-    <button *ngFor="let schoolClass of schoolClassList" (click)="setClassFilter(schoolClass)" [ngClass]="{'activeBtn': schoolClass==currentClass}">{{ schoolClass }}</button>
-</ion-content>
+    <button *ngFor="let schoolClass of schoolClassList" (click)="setClassFilter(schoolClass)">{{ schoolClass }}</button>
+
+    </ion-content>

@@ -19,17 +19,11 @@ export class SearchBooksPage {
 
   books: Book[] = [];
   searchedBooks: Book[] = [];
-  classList: string[] = [
-    "hello 01",
-    "hell 02"
-  ];
-  subjectList: string[] = [
-    "hello 01",
-    "hell 02"
-  ];
+  classList: string[] = [];
+  subjectList: string[] = [];
   filters: { class: string, subject: string, searchbar: string } = {
-    class: "all",
-    subject: "all",
+    class: "All",
+    subject: "All",
     searchbar: ""
   }
 
@@ -45,11 +39,7 @@ export class SearchBooksPage {
     private booksProvider: BooksProvider) {
 
   }
-public getPageTitle(currentClass: string){
-  if(currentClass.toLowerCase() == 'nursery') return 'Soft Berry';
-  if(currentClass.toLowerCase() == 'lkg') return 'Sweet Berry';
-  if(currentClass.toLowerCase() == 'ukg') return 'Smart Berry';
-}
+
   ionViewWillEnter() {
     if (this.deviceProvider.checkNetworkDisconnected()) {
       this.presentOfflineAlert();
@@ -67,7 +57,8 @@ public getPageTitle(currentClass: string){
   subscribeToClassFilterSubject() {
     this.booksProvider.getClassFilterAsObservable().subscribe(classFilterVal => {
       this.filters.class = classFilterVal;
-      this.filterBooks();
+      console.log("new value of class filter: " + this.filters.class);
+      //this.filterBooks("class");
     })
   }
 
@@ -81,11 +72,17 @@ public getPageTitle(currentClass: string){
     this.booksProvider.getAll().subscribe(
       data => {
         //add default option to filter list
+        this.subjectList.push("All");
 
         data.resources.forEach(book => {
           this.books.push(book);
+          if (book.schoolClass == this.filters.class && this.subjectList.indexOf(book.subject) < 0) {
+            this.subjectList.push(book.subject);
+          }
         });
-        this.filterBooks();
+
+        this.filterBooks("class");
+        this.sortSubjectList();
         loader.dismiss();
 
         console.log("fetched books: ", this.books);
@@ -96,34 +93,65 @@ public getPageTitle(currentClass: string){
         this.presentFailureAlert("Technical Error", "Please try again later");
       }
     )
+
+    //setup class filter
+    this.booksProvider.getSchoolClassList().forEach(schoolClass => this.classList.push(schoolClass));
   }
 
-  public filterBooks() {
 
+  public filterBooks(filterBy: string) {
+
+    //reInitSubjectFilter - part 1
+    if (filterBy == "class") {
+      console.log("subject filter reset");
+      this.filters.subject = "All";
+      this.subjectList = ["All"];
+    }
     let classFilter = this.filters.class;
     let subjectFilter = this.filters.subject;
     let searchFilter = this.filters.searchbar;
 
-    console.log(`filter books fired with {class: ${classFilter}, subject: ${subjectFilter}, search: ${searchFilter}`);
+    console.log(`filter books fired with {class: ${classFilter}, subject: ${subjectFilter}, search: ${searchFilter}}`);
 
     this.searchedBooks = this.books.filter(function (item) {
-      return (classFilter == "all" || item.schoolClass.toLowerCase() == classFilter) &&
-        (subjectFilter == "all" || item.subject == subjectFilter) &&
+      return (classFilter == "All" || item.schoolClass.toLowerCase() == classFilter.toLowerCase()) &&
+        (subjectFilter == "All" || item.subject == subjectFilter) &&
         (!searchFilter || !searchFilter.trim() || item.title.toLowerCase().includes(searchFilter.toLowerCase()))
 
     });
+
+    //reInitSubjectFilter - part 2
+    if (filterBy == "class") {
+      this.searchedBooks.forEach(book => {
+        if (this.subjectList.indexOf(book.subject) < 0) {
+          this.subjectList.push(book.subject);
+        }
+      })
+      this.sortSubjectList();
+
+    }
+  }
+
+  private sortSubjectList(): void {
+    this.subjectList = this.subjectList.sort((a, b) => {
+      if (a == "All") return -1;
+      if (b == "All") return 1;
+      let textA = a.toUpperCase();
+      let textB = b.toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    })
   }
 
   public filterBooksByTitle(ev: any) {
     this.filters.searchbar = ev.target.value;
-    this.filterBooks();
+    this.filterBooks("title");
   }
 
-  public goToBookFilterPage() {
+  // public goToBookFilterPage() {
 
-    this.navCtrl.parent.parent.setRoot(PageConstants.BOOK_FILTER_PAGE, { "openedAsRoot": true });
+  //   this.navCtrl.parent.parent.setRoot(PageConstants.BOOK_FILTER_PAGE, { "openedAsRoot": true });
 
-  }
+  // }
 
   public goToBookDetail(book: Book) {
     // to scan using qr scanner, use book details page

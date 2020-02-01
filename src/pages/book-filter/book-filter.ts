@@ -15,9 +15,8 @@ import * as PageConstants from '../pages.constants';
 })
 export class BookFilterPage {
 
-  schoolClassList: string[] = ["all"];
-  currentClass: string;
-  openedAsRoot:boolean;
+  schoolClassList: string[] = [];
+  //currentClass: string;
 
   constructor(private navCtrl: NavController,
     private platform: Platform,
@@ -30,28 +29,27 @@ export class BookFilterPage {
   }
 
   ionViewWillEnter() {
-    this.openedAsRoot=this.navParams.get("openedAsRoot");
 
     if (this.deviceProvider.checkNetworkDisconnected()) {
       this.presentOfflineAlert();
     }
-    else if (this.schoolClassList.length == 1) {
+    else if (this.schoolClassList.length == 0) {
       //load books and other data - this page uses only the class data, but other info fetched is required 
       //in other parts of the app
       this.loadBooks();
     }
-    this.subscribeToClassFilterSubject();
+    //this.subscribeToClassFilterSubject();
 
   }
 
   //the value of class filter can be updated via this page itself
   //however, to highlight the current filter value next time this page opens,
   //we subscribe to the subject tracking the filter's value
-  subscribeToClassFilterSubject() {
-    this.booksProvider.getClassFilterAsObservable().subscribe(classFilter => {
-      this.currentClass = classFilter;
-    })
-  }
+  // subscribeToClassFilterSubject() {
+  //   this.booksProvider.getClassFilterAsObservable().subscribe(classFilter => {
+  //     this.currentClass = classFilter;
+  //   })
+  // }
 
   //triggers loading of book list - uses the list of school classes calculated from book data
   //to give users an option to filter books by class
@@ -76,14 +74,7 @@ export class BookFilterPage {
 
   setClassFilter(filterVal: string) {
     this.booksProvider.setClassFilterNextVal(filterVal);
-    if (this.navParams.get("openedAsRoot")) {
-      console.log("page is the root view")
-      this.navCtrl.setRoot(PageConstants.TABS_PAGE);
-    }
-    else if (this.navCtrl.canGoBack()) {
-      console.log("page is not the root view")
-      this.navCtrl.pop();
-    }
+    this.navCtrl.setRoot(PageConstants.TABS_PAGE);
   }
 
   presentOfflineAlert() {

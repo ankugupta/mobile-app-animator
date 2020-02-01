@@ -1,12 +1,6 @@
 <ion-header>
     <ion-navbar color="secondary">
-        <ion-title>{{getPageTitle(filters.class)}}</ion-title>
-        <ion-buttons end>
-            <button ion-button icon-only color="royal" (click)="goToBookFilterPage()">
-              <ion-icon name="options"></ion-icon>
-            </button>
-        </ion-buttons>
-
+        <ion-title>Search Books</ion-title>
     </ion-navbar>
 
 </ion-header>
@@ -17,13 +11,13 @@
             <ion-row>
                 <ion-col col>
                     class:
-                    <ion-select [(ngModel)]="filters.class" (ionChange)="filterBooks()" interface="popover">
+                    <ion-select [(ngModel)]="filters.class" (ionChange)="filterBooks('class');" interface="popover">
                         <ion-option *ngFor="let class of classList">{{class}}</ion-option>
                     </ion-select>
                 </ion-col>
                 <ion-col col>
                     subject:
-                    <ion-select [(ngModel)]="filters.subject" (ionChange)="filterBooks()" interface="popover">
+                    <ion-select [(ngModel)]="filters.subject" (ionChange)="filterBooks('subject')" interface="popover">
                         <ion-option *ngFor="let subject of subjectList">{{subject}}</ion-option>
                     </ion-select>
                 </ion-col>
