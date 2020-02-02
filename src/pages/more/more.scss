@@ -11,4 +11,10 @@ page-more {
     .activated {
         background: rgba(0, 0, 0, 0.17) !important;
     }
+    .item {
+        background-color: transparent;
+    }
+    .item-inner {
+        border-bottom: 0.55px solid #ccbf9e !important;
+    }
 }

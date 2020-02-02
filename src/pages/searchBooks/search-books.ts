@@ -20,12 +20,19 @@ export class SearchBooksPage {
   books: Book[] = [];
   searchedBooks: Book[] = [];
   classList: string[] = [
-    "hello 01",
-    "hell 02"
+    "Nursery",
+    "LKG",
+    "UKG",
+    "First",
+    "Second",
+    "Third",
+    "Fourth",
+    "Fifth",
+    "Sixth"
   ];
   subjectList: string[] = [
-    "hello 01",
-    "hell 02"
+    "English",
+    "Science"
   ];
   filters: { class: string, subject: string, searchbar: string } = {
     class: "all",

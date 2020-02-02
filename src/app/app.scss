@@ -21,7 +21,7 @@ ion-content {
 //     background-size: cover;
 // }
 .content {
-    background-image: linear-gradient(#fff, #f5f5f5);
+    background-image: linear-gradient(#ffe7ac, #fff);
 }
 
 ion-card {
@@ -29,8 +29,13 @@ ion-card {
     width: 100% !important;
 }
 
+.toolbar-background {
+    border-color: #f1ab00 !important
+}
+
 .tabbar {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 0 !important;
+    box-shadow: 0px 1px 22px #c5c5c5;
 }
 
 .item {
@@ -85,4 +90,13 @@ button {
 
 .header-md {
     text-align: center;
+}
+
+.popover-content {
+    padding: 15px;
+    width: 60% !important;
+}
+
+button {
+    border-radius: 100px !important;
 }
