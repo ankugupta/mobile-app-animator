@@ -105,5 +105,4 @@
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="^3.2.0" />
     <engine name="android" spec="^8.1.0" />
-    <engine name="ios" spec="4.5.5" />
 </widget>
