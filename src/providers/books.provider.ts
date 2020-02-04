@@ -14,7 +14,7 @@ export class BooksProvider {
 
   booksCache: Book[] = [];
   schoolClassSet: Set<string> = new Set();
-  classFilterSubject: Subject<string> = new BehaviorSubject("all");
+  classFilterSubject: Subject<string> = new BehaviorSubject("All");
   bookIdToDetailsMap: Map<string, Book> = new Map();
 
   //flag - false indicates that books section is already initialized

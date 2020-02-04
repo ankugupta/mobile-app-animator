@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar color="secondary">
-        <ion-title>{{getPageTitle(filters.class)}}</ion-title>
+        <ion-title>Search Books</ion-title>
     </ion-navbar>
 </ion-header>
 
@@ -10,20 +10,20 @@
         <ion-list>
             <ion-item>
                 <ion-label>Class: </ion-label>
-                <ion-select interface="popover" [(ngModel)]="filters.class" (ionChange)="filterBooks()">
+                <ion-select interface="popover" [(ngModel)]="filters.class" (ionChange)="filterBooks('class');">
                     <ion-option *ngFor="let class of classList">{{class}}</ion-option>
                 </ion-select>
             </ion-item>
         </ion-list>
 
-        <!-- <ion-list>
+        <ion-list>
             <ion-item>
                 <ion-label>Subject: </ion-label>
-                <ion-select [(ngModel)]="filters.subject" (ionChange)="filterBooks()" interface="popover">
+                <ion-select [(ngModel)]="filters.subject" (ionChange)="filterBooks('subject')" interface="popover">
                     <ion-option *ngFor="let subject of subjectList">{{subject}}</ion-option>
                 </ion-select>
             </ion-item>
-        </ion-list> -->
+        </ion-list>
 
         <ion-searchbar #searchBar placeholder="Search with book name" (ionInput)="filterBooksByTitle($event)"></ion-searchbar>
     </ion-card>
