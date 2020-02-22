@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import * as Constants from '../app/app.constants';
 import { DataProvider } from './data.provider';
 import { Result } from '../model/response';
-import { Book } from '../model/book';
 import { Video } from '../model/video';
 
 @Injectable()

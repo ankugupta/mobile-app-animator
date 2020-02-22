@@ -1,5 +1,5 @@
 import {
-  AlertController, IonicPage, LoadingController, NavController, NavParams, Platform
+  AlertController, IonicPage, LoadingController, NavController, Platform
 } from 'ionic-angular';
 
 import { Component } from '@angular/core';
@@ -22,7 +22,6 @@ export class BookFilterPage {
     private platform: Platform,
     private alertCtrl: AlertController,
     private loadingController: LoadingController,
-    private navParams: NavParams,
     private deviceProvider: DeviceProvider,
     private booksProvider: BooksProvider
   ) {
