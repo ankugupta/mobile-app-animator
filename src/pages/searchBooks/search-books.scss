@@ -73,4 +73,9 @@ page-search-books {
         font-weight: 700;
         letter-spacing: 1px;
     }
+    .item-input .label-md,
+    .item-select .label-md,
+    .item-datetime .label-md {
+        color: #000;
+    }
 }
