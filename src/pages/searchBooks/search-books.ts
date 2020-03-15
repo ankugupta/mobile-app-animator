@@ -101,7 +101,7 @@ public getPageTitle(currentClass: string){
     console.log(`filter books fired with {class: ${classFilter}, subject: ${subjectFilter}, search: ${searchFilter}`);
 
     this.searchedBooks = this.books.filter(function (item) {
-      return (classFilter == "all" || item.schoolClass.toLowerCase() == classFilter) &&
+      return (classFilter == "all" || item.schoolClass.toLowerCase() == classFilter.toLowerCase()) &&
         (subjectFilter == "all" || item.subject == subjectFilter) &&
         (!searchFilter || !searchFilter.trim() || item.title.toLowerCase().includes(searchFilter.toLowerCase()))
 
