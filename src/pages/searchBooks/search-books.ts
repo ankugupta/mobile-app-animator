@@ -40,9 +40,9 @@ export class SearchBooksPage {
 
   }
 public getPageTitle(currentClass: string){
-  if(currentClass.toLowerCase() == 'nursery') return 'Soft Berry';
-  if(currentClass.toLowerCase() == 'lkg') return 'Sweet Berry';
-  if(currentClass.toLowerCase() == 'ukg') return 'Smart Berry';
+  if(currentClass.toLowerCase() == 'level a') return 'Level A';
+  if(currentClass.toLowerCase() == 'level b') return 'Level B';
+  if(currentClass.toLowerCase() == 'level c') return 'Level C';
 }
   ionViewWillEnter() {
     if (this.deviceProvider.checkNetworkDisconnected()) {
