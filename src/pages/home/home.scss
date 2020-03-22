@@ -1,25 +1,24 @@
 home {
-    ç .content {
-        background-image: linear-gradient(1deg, #ffc27d, #b23729);
+    .content {
+        background: #b74620 url(../../assets/img/mobile-app-bg.png) no-repeat bottom;
+        background-size: 100%;
         color: #fff !important;
     }
     .scroll-content {
         text-align: center;
-        display: flex;
-        align-items: normal;
-        justify-content: center;
-        flex-direction: column;
+        text-align: center;
+        margin: 40px 0 0;
         img {
             margin: 0 auto;
         }
         p {
-            font-size: 26px;
-            padding: 0 22px 60px;
+            font-size: 24px;
+            padding: 0 22px 10px;
         }
         button {
             width: 70%;
             margin: 0 auto;
-            height: 70px;
+            height: 55px;
         }
     }
 }

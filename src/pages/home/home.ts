@@ -30,7 +30,5 @@ export class HomePage {
     }
   }
 
-  goToJugnuVideosFeature() {
-    this.navCtrl.setRoot(PageConstants.JUGNU_VIDEOS_PAGE);
-  }
+
 }

@@ -3,14 +3,16 @@ page-search-books {
         padding: 10px !important;
     }
     p {
-        margin: 15px 6px !important;
+        margin: 8px 6px !important;
         font-size: 16px !important;
         text-align: center;
         font-weight: 500;
         text-transform: capitalize;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
     }
     ion-card-content {
         padding: 0px !important;
@@ -24,5 +26,8 @@ page-search-books {
     }
     .card {
         background: #ffffff !important;
+    }
+    ion-searchbar {
+        background: rgb(142, 40, 29) !important;
     }
 }

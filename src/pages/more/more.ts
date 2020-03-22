@@ -19,8 +19,8 @@ export class MorePage {
   openFaqPage() {
     this.nav.push(PageConstants.FAQ_PAGE);
   };
-  openHomePage(){
-    this.nav.parent.parent.setRoot(PageConstants.HOME_PAGE);
+  openBookFilterPage(){
+    this.nav.parent.parent.setRoot(PageConstants.BOOK_FILTER_PAGE);
   }
 
   logMeOut() {
