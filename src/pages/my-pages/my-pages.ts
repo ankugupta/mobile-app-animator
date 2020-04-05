@@ -7,7 +7,7 @@ import { File, RemoveResult } from '@ionic-native/file';
 import { DeviceProvider } from '../../providers/device.provider';
 import { SqlStorageProvider } from '../../providers/sql-storage.provider';
 import { PageEntity } from '../../model/pageEntity';
-import { normalizeURL } from 'ionic-angular';
+import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage()
 @Component({
@@ -30,7 +30,9 @@ export class MyPagesPage {
     private screenOrientation: ScreenOrientation,
     private loadingController: LoadingController,
     private deviceProvider: DeviceProvider,
-    private file: File) { }
+    private file: File,
+    private sanitizer: DomSanitizer,
+    ) { }
 
   ionViewWillEnter() {
     this.myPages = [];
@@ -42,11 +44,11 @@ export class MyPagesPage {
     this.deviceOnline = !this.deviceProvider.checkNetworkDisconnected();
   }
 
-  public getUrl(imageUrl) {
-    let nUrl = normalizeURL(imageUrl);
-    console.log("normalize url: " + nUrl);
-    return nUrl;
-  }
+  public getUrl(imageUrl): SafeUrl {
+    let newUrl = (<any>window).Ionic.WebView.convertFileSrc(imageUrl);
+    console.log("url: " + imageUrl + "new url: " + newUrl);
+    return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+    }
 
   private loadPages(currentBookId: string) {
     //show load icon
