@@ -34,7 +34,7 @@
         "@ionic-native/sqlite": "^4.17.0",
         "@ionic-native/status-bar": "~4.20.0",
         "@ionic/storage": "2.2.0",
-        "cordova-android": "7.1.4",
+        "cordova-android": "^8.1.0",
         "cordova-ios": "^4.5.5",
         "cordova-plugin-device": "^2.0.2",
         "cordova-plugin-file": "^6.0.1",
@@ -81,8 +81,8 @@
             "cordova-plugin-inappbrowser": {}
         },
         "platforms": [
-            "android",
-            "ios"
+            "ios",
+            "android"
         ]
     }
 }

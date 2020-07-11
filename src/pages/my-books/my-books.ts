@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Platform, IonicPage } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Platform, IonicPage, normalizeURL } from 'ionic-angular';
 import { File, RemoveResult } from '@ionic-native/file';
 import { DeviceProvider } from '../../providers/device.provider';
 import { SqlStorageProvider } from '../../providers/sql-storage.provider';
@@ -43,12 +43,18 @@ export class MyBooksPage {
     this.loadBooks();
     this.deviceOnline = !this.deviceProvider.checkNetworkDisconnected();
   }
-  
+
   public getUrl(imageUrl): SafeUrl {
-    let newUrl = (<any>window).Ionic.WebView.convertFileSrc(imageUrl);
-    console.log("url: " + imageUrl + "new url: " + newUrl);
-    return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+    let newUrl = imageUrl;
+    if ((<any>window).Ionic.WebView) {
+      newUrl = (<any>window).Ionic.WebView.convertFileSrc(imageUrl);
     }
+    else {
+      newUrl = normalizeURL(imageUrl);
+    }
+    console.log("url: " + imageUrl + " new-url: " + newUrl);
+    return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+  }
 
   private loadBooks() {
 

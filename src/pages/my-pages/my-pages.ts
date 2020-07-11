@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController, Platform, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, Platform, IonicPage, normalizeURL } from 'ionic-angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { File, RemoveResult } from '@ionic-native/file';
@@ -32,7 +32,7 @@ export class MyPagesPage {
     private deviceProvider: DeviceProvider,
     private file: File,
     private sanitizer: DomSanitizer,
-    ) { }
+  ) { }
 
   ionViewWillEnter() {
     this.myPages = [];
@@ -45,10 +45,16 @@ export class MyPagesPage {
   }
 
   public getUrl(imageUrl): SafeUrl {
-    let newUrl = (<any>window).Ionic.WebView.convertFileSrc(imageUrl);
-    console.log("url: " + imageUrl + "new url: " + newUrl);
-    return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+    let newUrl = imageUrl;
+    if ((<any>window).Ionic.WebView) {
+      newUrl = (<any>window).Ionic.WebView.convertFileSrc(imageUrl);
     }
+    else {
+      newUrl = normalizeURL(imageUrl);
+    }
+    console.log("url: " + imageUrl + " new-url: " + newUrl);
+    return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+  }
 
   private loadPages(currentBookId: string) {
     //show load icon
