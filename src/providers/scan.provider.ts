@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { LoadingController, AlertController, Platform, Loading } from 'ionic-angular';
+import { LoadingController, AlertController, Platform, Loading, normalizeURL } from 'ionic-angular';
 import { DeviceProvider } from './device.provider';
 import { FilesProvider } from './files.provider';
 import { SqlStorageProvider } from './sql-storage.provider';
@@ -305,10 +305,27 @@ export class ScanProvider {
       });
   }
 
+
+  
+  public convertUrl(url) {
+    let newUrl = url;
+    if ((<any>window).Ionic.WebView) {
+      newUrl = (<any>window).Ionic.WebView.convertFileSrc(url);
+    }
+    else {
+      newUrl = normalizeURL(url);
+    }
+    console.log("url: " + url + " new-url: " + newUrl);
+    return newUrl;
+    // return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+  }
+
+
   //opens media with given url in in-app-browser
   openMedia(mediaUrl: string) {
-
-    console.log("playing media at: ", mediaUrl);
+    console.log("#########################################ritesh playing media at: ", mediaUrl);
+    mediaUrl = this.convertUrl(mediaUrl);
+    console.log("media url converted: ", mediaUrl )
     let optionString = "location=no,hidden=no";
     if (this.platform.is("ios")) {
       optionString = "location=no,hidden=no,usewkwebview=yes";

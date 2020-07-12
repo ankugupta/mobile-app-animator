@@ -1,5 +1,5 @@
 import {
-  AlertController, IonicPage, Loading, LoadingController, NavController, NavParams, Platform
+  AlertController, IonicPage, Loading, LoadingController, NavController, NavParams, Platform, normalizeURL
 } from 'ionic-angular';
 
 import { Component } from '@angular/core';
@@ -40,7 +40,8 @@ export class ScanBookPage {
     private platform: Platform,
     private booksProvider: BooksProvider,
     private filesProvider: FilesProvider,
-    private sqlProvider: SqlStorageProvider) {
+    private sqlProvider: SqlStorageProvider,
+   ) {
 
   }
 
@@ -475,10 +476,49 @@ export class ScanBookPage {
       });
   }
 
+  // protected fixURL(url: string): string {
+  //   if (this.platform.is('cordova')) {
+  //   const win: any = window;
+  //   const fixedURL = win.Ionic.WebView.convertFileSrc(url);
+  //   return fixedURL;
+  //   } else {
+  //     return url;
+  //   }
+  // }
+
+  public convertUrl(url) {
+    let newUrl = url;
+    if ((<any>window).Ionic.WebView) {
+      newUrl = (<any>window).Ionic.WebView.convertFileSrc(url);
+    }
+    else {
+      newUrl = normalizeURL(url);
+    }
+    console.log("url: " + url + " new-url: " + newUrl);
+    return newUrl;
+    // return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+  }
+  // convertFileSrc(url: string) {
+  //   const win :any = Window;
+  //   if (!url) {
+  //     return url;
+  //   }
+  //   if (url.startsWith('/')) {
+  //     return win.WEBVIEW_SERVER_URL + '/_app_file_' + url;
+  //   }
+  //   if (url.startsWith('file://')) {
+  //     return win.WEBVIEW_SERVER_URL + url.replace('file://', '/_app_file_');
+  //   }
+  //   if (url.startsWith('content://')) {
+  //     return win.WEBVIEW_SERVER_URL + url.replace('content:/', '/_app_content_');
+  //   }
+  //   return url;
+  // }
   //opens media with given url in in-app-browser
   openMedia(mediaUrl: string) {
-
-    console.log("playing media at: ", mediaUrl);
+    console.log("#########################################ritesh playing media at: ", mediaUrl);
+    mediaUrl = this.convertUrl(mediaUrl);
+    console.log("media url converted: ", mediaUrl )
     let optionString = "location=no,hidden=no";
     if (this.platform.is("ios")) {
       optionString = "location=no,hidden=no,usewkwebview=yes";

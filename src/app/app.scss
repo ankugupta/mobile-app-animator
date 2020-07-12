@@ -86,3 +86,44 @@ button {
 .header-md {
     text-align: center;
 }
+
+@media only screen and (min-width: 768px) {
+    .bookThumb {
+        height: 500px !important;
+        overflow: hidden !important;
+        img {
+            height: 100%;
+        }
+    }
+    page-search-books p {
+        font-size: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 40px;
+    }
+    page-scan-book {
+        .classBg,
+        .subjectBg,
+        .videosBg,
+        .activitiesBg {
+            height: 190px !important;
+            font-size: 24px;
+        }
+        .classBg span,
+        .subjectBg span,
+        .videosBg span,
+        .activitiesBg span {
+            font-size: 35px !important;
+        }
+        .btnBottom {
+            height: 60px;
+            font-size: 22px;
+        }
+    }
+    jugnu-videos .videoThumb {
+        height: auto !important;
+        overflow: hidden;
+        position: relative;
+    }
+}
