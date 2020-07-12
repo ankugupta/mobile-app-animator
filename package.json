@@ -82,8 +82,8 @@
             "cordova-plugin-vuforia": {}
         },
         "platforms": [
-            "android",
-            "ios"
+            "ios",
+            "android"
         ]
     }
 }

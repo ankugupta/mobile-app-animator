@@ -190,7 +190,6 @@ export class MyPagesPage {
     let optionString = "location=no,hidden=no";
     if (this.platform.is("ios")) {
       optionString = "location=no,hidden=no,usewkwebview=yes";
-      console.log("using options ", optionString);
     }
     let iab = this.iab.create(mediaUrl, "_blank", optionString);
     //let iab = this.iab.create(mediaUrl, "_blank", "usewkwebview=yes");
