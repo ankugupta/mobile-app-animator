@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController, Platform, IonicPage, normalizeURL } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, Platform, IonicPage } from 'ionic-angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { File, RemoveResult } from '@ionic-native/file';
@@ -7,7 +7,10 @@ import { File, RemoveResult } from '@ionic-native/file';
 import { DeviceProvider } from '../../providers/device.provider';
 import { SqlStorageProvider } from '../../providers/sql-storage.provider';
 import { PageEntity } from '../../model/pageEntity';
+import { normalizeURL } from 'ionic-angular';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+
+
 
 @IonicPage()
 @Component({
@@ -30,9 +33,8 @@ export class MyPagesPage {
     private screenOrientation: ScreenOrientation,
     private loadingController: LoadingController,
     private deviceProvider: DeviceProvider,
-    private file: File,
     private sanitizer: DomSanitizer,
-  ) { }
+    private file: File) { }
 
   ionViewWillEnter() {
     this.myPages = [];
@@ -166,16 +168,30 @@ export class MyPagesPage {
     )
   }
 
-  //called from UI
-  openMedia(page: PageEntity) {
+  public convertUrl(url) {
+    let newUrl = url;
+    if ((<any>window).Ionic.WebView) {
+      newUrl = (<any>window).Ionic.WebView.convertFileSrc(url);
+    }
+    else {
+      newUrl = normalizeURL(url);
+    }
+    console.log("url: " + url + " new-url: " + newUrl);
+    return newUrl;
+    // return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+  }
 
-    console.log("playing media at: ", page.contentUrl);
+
+  //opens media with given url in in-app-browser
+  openMedia(mediaUrl: string) {
+    console.log("#########################################ritesh playing media at: ", mediaUrl);
+    mediaUrl = this.convertUrl(mediaUrl);
+    console.log("media url converted: ", mediaUrl )
     let optionString = "location=no,hidden=no";
     if (this.platform.is("ios")) {
       optionString = "location=no,hidden=no,usewkwebview=yes";
     }
-    console.log("using options ", optionString);
-    let iab = this.iab.create(page.contentUrl, "_blank", optionString);
+    let iab = this.iab.create(mediaUrl, "_blank", optionString);
     //let iab = this.iab.create(mediaUrl, "_blank", "usewkwebview=yes");
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
 
@@ -185,8 +201,8 @@ export class MyPagesPage {
         console.log("orientation after browser close: " + this.screenOrientation.type);
       }
     )
-
   }
+
 
 
 
