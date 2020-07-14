@@ -5,7 +5,7 @@
 	ionic cordova platform add android@6.4
 
 	NOTE: step 2 is only required if the app uses QR scanner. Current version does not (code is commented).
-2) app uses a modified version of cordova-plugin-qrscanner. camera related permissions are required for both qrscanner and vuforia plugins. 
+2) IN CASE QR SCANNER USED - app uses a modified version of cordova-plugin-qrscanner. camera related permissions are required for both qrscanner and vuforia plugins. 
 	This causes issue while building - a duplicate entry issue is raised for AndroidManifest.xml. Hence, a locally modified qrscanner is used where 
 	permissions in config.xml have been modified. Modified code of plugin availabe at: https://github.com/ankugupta/cordova-plugin-qrscanner.git/trunk.
 	To add this into your project, use: 
@@ -16,7 +16,8 @@
 
 3) to check logs: adb logcat ActivityManager:I CordovaVuforiaPlugin:D ImageTargets:V *:S
 
-4) since the cordova-vuforia-plugin only provides libVuforia.so for armeabi-v7a, we cannot support arm64-v8 (64 bit architecture). 
+4) OLDER ISSUE - Resolved via upgradation of CVP in DEC-2019:
+   Since the cordova-vuforia-plugin only provides libVuforia.so for armeabi-v7a, we cannot support arm64-v8 (64 bit architecture). 
    Hence, abi filter is used to configure the APK build to skip arm64-v8.
    Details- this issue is caused since android phones support multiple architectures (armeabi etc.). Native libraries (.so files) are compiled differently 
    for each abi. If your APK has any .so built for arm64, and the phone primarily supports arm64, the other .so files(if any) will not be installed by the package
