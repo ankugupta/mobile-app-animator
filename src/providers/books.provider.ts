@@ -45,7 +45,7 @@ export class BooksProvider {
       //sort books cache by class and title
       let classOrderMap: Map<string, number> = this.masterDataProvider.getMasterRecord(Constants.MD_TYPE_CLASS_ORDERING);
       this.booksCache = this.booksCache.sort((a, b) => {
-        if (classOrderMap.get(a.schoolClass) - classOrderMap.get(b.schoolClass) != 0) {
+        if (classOrderMap && classOrderMap.get(a.schoolClass) - classOrderMap.get(b.schoolClass) != 0) {
           return classOrderMap.get(a.schoolClass) - classOrderMap.get(b.schoolClass);
         }
         let textA = a.title.toUpperCase();
@@ -110,9 +110,12 @@ export class BooksProvider {
 
     //sort the list of classes and return
     let classOrderMap: Map<string, number> = this.masterDataProvider.getMasterRecord(Constants.MD_TYPE_CLASS_ORDERING);
-    return classList.sort((a, b) => {
-      return classOrderMap.get(a) - classOrderMap.get(b);
-    });
+    if (classOrderMap) {
+      return classList.sort((a, b) => {
+        return classOrderMap.get(a) - classOrderMap.get(b);
+      });
+    }
+    return classList;
 
   }
 }
