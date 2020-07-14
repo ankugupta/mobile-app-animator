@@ -9,6 +9,7 @@ import * as PageConstants from '../pages.constants';
 import { BooksProvider } from '../../providers/books.provider';
 import { ScanProvider } from '../../providers/scan.provider';
 import { normalizeURL } from 'ionic-angular';
+import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 
 @IonicPage()
@@ -31,6 +32,7 @@ export class MyBooksPage {
     private scanProvider: ScanProvider,
     private loadingController: LoadingController,
     private platform: Platform,
+    private sanitizer: DomSanitizer,
     private file: File
   ) { }
 
@@ -43,10 +45,16 @@ export class MyBooksPage {
     this.deviceOnline = !this.deviceProvider.checkNetworkDisconnected();
   }
   
-  public getUrl(imageUrl) {
-    let nUrl = normalizeURL(imageUrl);
-    console.log("normalize url: " + nUrl);
-    return nUrl;
+  public getUrl(imageUrl): SafeUrl {
+    let newUrl = imageUrl;
+    if ((<any>window).Ionic.WebView) {
+      newUrl = (<any>window).Ionic.WebView.convertFileSrc(imageUrl);
+    }
+    else {
+      newUrl = normalizeURL(imageUrl);
+    }
+    console.log("url: " + imageUrl + " new-url: " + newUrl);
+    return this.sanitizer.bypassSecurityTrustUrl(newUrl);
   }
 
   private loadBooks() {

@@ -1,17 +1,21 @@
+import {
+  AlertController, IonicPage, Loading, LoadingController, NavController, NavParams, Platform, normalizeURL
+} from 'ionic-angular';
+
 import { Component } from '@angular/core';
-import { Platform, NavParams, NavController, LoadingController, AlertController, Loading, IonicPage } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
-import { Book } from '../../model/book';
-import { BookEntity } from "../../model/bookEntity";
-import { BooksProvider } from '../../providers/books.provider';
+
 import * as Constants from '../../app/app.constants';
 import * as PageConstants from '../pages.constants';
+import { Book } from '../../model/book';
+import { BookEntity } from '../../model/bookEntity';
+import { Page } from '../../model/page';
+import { PageEntity } from '../../model/pageEntity';
+import { BooksProvider } from '../../providers/books.provider';
+import { DeviceProvider } from '../../providers/device.provider';
 import { FilesProvider } from '../../providers/files.provider';
 import { SqlStorageProvider } from '../../providers/sql-storage.provider';
-import { PageEntity } from '../../model/pageEntity';
-import { Page } from '../../model/page';
-import { DeviceProvider } from '../../providers/device.provider';
 
 @IonicPage()
 @Component({
@@ -37,7 +41,8 @@ export class ScanBookPage {
     private platform: Platform,
     private booksProvider: BooksProvider,
     private filesProvider: FilesProvider,
-    private sqlProvider: SqlStorageProvider) {
+    private sqlProvider: SqlStorageProvider,
+   ) {
 
   }
 
@@ -472,26 +477,64 @@ export class ScanBookPage {
       });
   }
 
+  // protected fixURL(url: string): string {
+  //   if (this.platform.is('cordova')) {
+  //   const win: any = window;
+  //   const fixedURL = win.Ionic.WebView.convertFileSrc(url);
+  //   return fixedURL;
+  //   } else {
+  //     return url;
+  //   }
+  // }
+
+  public convertUrl(url) {
+    let newUrl = url;
+    if ((<any>window).Ionic.WebView) {
+      newUrl = (<any>window).Ionic.WebView.convertFileSrc(url);
+    }
+    else {
+      newUrl = normalizeURL(url);
+    }
+    console.log("url: " + url + " new-url: " + newUrl);
+    return newUrl;
+    // return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+  }
+  // convertFileSrc(url: string) {
+  //   const win :any = Window;
+  //   if (!url) {
+  //     return url;
+  //   }
+  //   if (url.startsWith('/')) {
+  //     return win.WEBVIEW_SERVER_URL + '/_app_file_' + url;
+  //   }
+  //   if (url.startsWith('file://')) {
+  //     return win.WEBVIEW_SERVER_URL + url.replace('file://', '/_app_file_');
+  //   }
+  //   if (url.startsWith('content://')) {
+  //     return win.WEBVIEW_SERVER_URL + url.replace('content:/', '/_app_content_');
+  //   }
+  //   return url;
+  // }
   //opens media with given url in in-app-browser
   openMedia(mediaUrl: string) {
-
-    console.log("playing media at: ", mediaUrl);
-    let iab = this.iab.create(mediaUrl, "_blank", "location=no,hidden=no");
+    console.log("#########################################ritesh playing media at: ", mediaUrl);
+    mediaUrl = this.convertUrl(mediaUrl);
+    console.log("media url converted: ", mediaUrl )
+    let optionString = "location=no,hidden=no";
+    if (this.platform.is("ios")) {
+      optionString = "location=no,hidden=no,usewkwebview=yes";
+    }
+    console.log("using options ", optionString);
+    let iab = this.iab.create(mediaUrl, "_blank", optionString);
+    //let iab = this.iab.create(mediaUrl, "_blank", "usewkwebview=yes");
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-    // iab.on("loadstop").subscribe(
-    //   () => {
-    //     console.log("loadstop fired!");
-    //     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-    //     iab.show();
-    //   }
-    // )
+
     iab.on("exit").subscribe(
       () => {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
         console.log("orientation after browser close: " + this.screenOrientation.type);
       }
     )
-
   }
 
   private savePageInfo(page: Page, contentLocalUrl: string, imgLocalUrl: string) {
