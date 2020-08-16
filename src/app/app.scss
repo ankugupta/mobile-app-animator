@@ -100,3 +100,16 @@ button {
 button {
     border-radius: 100px !important;
 }
+
+page-search-books p {
+    margin: 0px 6px !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+}
+
+@media only screen and (min-width: 768px) {
+    .bookThumb {
+        height: 500px !important;
+        overflow: hidden !important;
+    }
+}
