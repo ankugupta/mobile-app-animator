@@ -49,6 +49,7 @@ export class MyBooksPage {
     let newUrl = imageUrl;
     if ((<any>window).Ionic.WebView) {
       newUrl = (<any>window).Ionic.WebView.convertFileSrc(imageUrl);
+      console.log("using webview *************************")
     }
     else {
       newUrl = normalizeURL(imageUrl);

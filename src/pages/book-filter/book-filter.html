@@ -1,0 +1,12 @@
+<ion-header>
+    <ion-navbar color="secondary">
+        <ion-title>Select Category</ion-title>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+    <button *ngFor="let schoolClass of schoolClassList" (click)="setClassFilter(schoolClass)">{{ schoolClass }}</button>
+
+    </ion-content>

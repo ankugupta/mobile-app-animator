@@ -3,14 +3,16 @@ page-search-books {
         padding: 10px !important;
     }
     p {
-        margin: 15px 6px !important;
-        font-size: 16px !important;
+        margin: 0px 6px !important;
+        font-size: 14px !important;
+        text-transform: uppercase !important;
         text-align: center;
         font-weight: 500;
-        text-transform: capitalize;
+        height: 50px;
         overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     ion-card-content {
         padding: 0px !important;
@@ -24,5 +26,57 @@ page-search-books {
     }
     .card {
         background: #efefef !important;
+    }
+    .popover-content {
+        padding: 15px;
+        width: 60% !important;
+    }
+    .filerCard {
+        padding: 10px 0 0 0;
+        margin-bottom: 10px !important;
+        background: #fec12b !important;
+        width: 105% !important;
+        margin: -10px -10px 10px !important;
+        h1 {
+            text-align: center;
+            font-size: 21px;
+            text-transform: uppercase;
+            font-weight: 400;
+            margin-bottom: 7px;
+        }
+        .searhbar {
+            padding: 10px 10px;
+            min-height: 44px;
+            border-top: 0.55px solid transparent;
+            border-bottom: 0.55px solid rgba(0, 0, 0, 0.05);
+            background: #fec12b;
+        }
+        ion-list {
+            padding: 0 10px 5px;
+            background: #fec12b;
+            .item {
+                background: transparent;
+            }
+        }
+    }
+    .ion-item {
+        .item-inner:last-child {
+            border-bottom: 0 !important;
+        }
+    }
+    .item-inner {
+        border-bottom: 1px solid #fff !important;
+    }
+    .select-icon-inner {
+        color: #000 !important;
+    }
+    .select-text {
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .item-input .label-md,
+    .item-select .label-md,
+    .item-datetime .label-md {
+        color: #000;
     }
 }

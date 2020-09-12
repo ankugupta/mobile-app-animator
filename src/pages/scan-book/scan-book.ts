@@ -7,7 +7,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import * as Constants from '../../app/app.constants';
-import * as PageConstants from '../pages.constants';
 import { Book } from '../../model/book';
 import { BookEntity } from '../../model/bookEntity';
 import { Page } from '../../model/page';
@@ -487,18 +486,18 @@ export class ScanBookPage {
   //   }
   // }
 
-  public convertUrl(url) {
-    let newUrl = url;
-    if ((<any>window).Ionic.WebView) {
-      newUrl = (<any>window).Ionic.WebView.convertFileSrc(url);
-    }
-    else {
-      newUrl = normalizeURL(url);
-    }
-    console.log("url: " + url + " new-url: " + newUrl);
-    return newUrl;
-    // return this.sanitizer.bypassSecurityTrustUrl(newUrl);
-  }
+  // public convertUrl(url) {
+  //   let newUrl = url;
+  //   if ((<any>window).Ionic.WebView) {
+  //     newUrl = (<any>window).Ionic.WebView.convertFileSrc(url);
+  //   }
+  //   else {
+  //     newUrl = normalizeURL(url);
+  //   }
+  //   console.log("url: " + url + " new-url: " + newUrl);
+  //   return newUrl;
+  //   // return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+  // }
   // convertFileSrc(url: string) {
   //   const win :any = Window;
   //   if (!url) {
@@ -518,7 +517,7 @@ export class ScanBookPage {
   //opens media with given url in in-app-browser
   openMedia(mediaUrl: string) {
     console.log("#########################################ritesh playing media at: ", mediaUrl);
-    mediaUrl = this.convertUrl(mediaUrl);
+   // mediaUrl = this.convertUrl(mediaUrl);
     console.log("media url converted: ", mediaUrl )
     let optionString = "location=no,hidden=no";
     if (this.platform.is("ios")) {
@@ -616,17 +615,6 @@ export class ScanBookPage {
       ]
     });
     alert.present();
-  }
-
-  public goBackToSearch(filter: string) {
-
-    if (filter == 'class') {
-      this.navCtrl.setRoot(PageConstants.SEARCH_BOOKS_PAGE, { filters: { class: this.currentBook.schoolClass } });
-    }
-
-    if (filter == 'subject') {
-      this.navCtrl.setRoot(PageConstants.SEARCH_BOOKS_PAGE, { filters: { subject: this.currentBook.subject } });
-    }
   }
 
   public isBookDownloaded(): boolean {

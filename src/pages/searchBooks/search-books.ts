@@ -1,8 +1,13 @@
+import {
+  AlertController, IonicPage, LoadingController, NavController, Platform, Searchbar
+} from 'ionic-angular';
+
 import { Component, ViewChild } from '@angular/core';
-import { Searchbar, NavController, Platform, AlertController, LoadingController, IonicPage, NavParams } from 'ionic-angular';
-import { BooksProvider } from '../../providers/books.provider';
+
 import { Book } from '../../model/book';
+import { BooksProvider } from '../../providers/books.provider';
 import { DeviceProvider } from '../../providers/device.provider';
+
 import * as PageConstants from '../pages.constants';
 
 @IonicPage()
@@ -15,10 +20,10 @@ export class SearchBooksPage {
   books: Book[] = [];
   searchedBooks: Book[] = [];
   classList: string[] = [];
-  subjectList:string[] = [];
+  subjectList: string[] = [];
   filters: { class: string, subject: string, searchbar: string } = {
-    class: "all",
-    subject: "all",
+    class: "All",
+    subject: "All",
     searchbar: ""
   }
 
@@ -31,7 +36,6 @@ export class SearchBooksPage {
     private loadingController: LoadingController,
     private deviceProvider: DeviceProvider,
     private navCtrl: NavController,
-    private navParams: NavParams,
     private booksProvider: BooksProvider) {
 
   }
@@ -44,11 +48,22 @@ export class SearchBooksPage {
       //if books have not already been loaded
       this.loadBooks();
     }
+
+    this.subscribeToClassFilterSubject();
+
+  }
+
+  //we subscribe to the subject tracking the filter's value
+  subscribeToClassFilterSubject() {
+    this.booksProvider.getClassFilterAsObservable().subscribe(classFilterVal => {
+      this.filters.class = classFilterVal;
+      console.log("new value of class filter: " + this.filters.class);
+      //this.filterBooks("class");
+    })
   }
 
   /**
    * loads all books of publisher
-   * TODO: use infinite scroll for better performance
    */
   public loadBooks() {
     let loader = this.loadingController.create();
@@ -57,23 +72,18 @@ export class SearchBooksPage {
     this.booksProvider.getAll().subscribe(
       data => {
         //add default option to filter list
-        this.classList.push("all");
-        this.subjectList.push("all");
+        this.subjectList.push("All");
 
         data.resources.forEach(book => {
           this.books.push(book);
-          this.searchedBooks.push(book);
-          this.classList.push(book.schoolClass);
-          this.subjectList.push(book.subject);
+          if (book.schoolClass == this.filters.class && this.subjectList.indexOf(book.subject) < 0) {
+            this.subjectList.push(book.subject);
+          }
         });
-        loader.dismiss();
 
-        if(this.navParams.get("filters")){
-          let filterParam = this.navParams.get("filters");
-          this.filters.class = filterParam.class || "all";
-          this.filters.subject = filterParam.subject || "all";
-          this.filterBooks();
-        }
+        this.filterBooks("class");
+        this.sortSubjectList();
+        loader.dismiss();
 
         console.log("fetched books: ", this.books);
       },
@@ -83,36 +93,65 @@ export class SearchBooksPage {
         this.presentFailureAlert("Technical Error", "Please try again later");
       }
     )
+
+    //setup class filter
+    this.booksProvider.getSchoolClassList().forEach(schoolClass => this.classList.push(schoolClass));
   }
 
-  public filterBooks() {
-    console.log("filter books fired!!!")
+
+  public filterBooks(filterBy: string) {
+
+    //reInitSubjectFilter - part 1
+    if (filterBy == "class") {
+      console.log("subject filter reset");
+      this.filters.subject = "All";
+      this.subjectList = ["All"];
+    }
     let classFilter = this.filters.class;
     let subjectFilter = this.filters.subject;
     let searchFilter = this.filters.searchbar;
 
+    console.log(`filter books fired with {class: ${classFilter}, subject: ${subjectFilter}, search: ${searchFilter}}`);
+
     this.searchedBooks = this.books.filter(function (item) {
-      return (classFilter == "all" || item.schoolClass == classFilter) &&
-        (subjectFilter == "all" || item.subject == subjectFilter) &&
+      return (classFilter == "All" || item.schoolClass.toLowerCase() == classFilter.toLowerCase()) &&
+        (subjectFilter == "All" || item.subject == subjectFilter) &&
         (!searchFilter || !searchFilter.trim() || item.title.toLowerCase().includes(searchFilter.toLowerCase()))
 
     });
+
+    //reInitSubjectFilter - part 2
+    if (filterBy == "class") {
+      this.searchedBooks.forEach(book => {
+        if (this.subjectList.indexOf(book.subject) < 0) {
+          this.subjectList.push(book.subject);
+        }
+      })
+      this.sortSubjectList();
+
+    }
+  }
+
+  private sortSubjectList(): void {
+    this.subjectList = this.subjectList.sort((a, b) => {
+      if (a == "All") return -1;
+      if (b == "All") return 1;
+      let textA = a.toUpperCase();
+      let textB = b.toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    })
   }
 
   public filterBooksByTitle(ev: any) {
-    console.log("filter by title fired!!!!!!!");
     this.filters.searchbar = ev.target.value;
-    this.filterBooks();
-
-    // if (val && val.trim() !== '') {
-    //   this.searchedBooks = this.books.filter(function (item) {
-    //     return item.title.toLowerCase().includes(val.toLowerCase());
-    //   });
-    // }
-    // else {
-    //   this.searchedBooks = this.books.slice(0, this.books.length);
-    // }
+    this.filterBooks("title");
   }
+
+  // public goToBookFilterPage() {
+
+  //   this.navCtrl.parent.parent.setRoot(PageConstants.BOOK_FILTER_PAGE, { "openedAsRoot": true });
+
+  // }
 
   public goToBookDetail(book: Book) {
     // to scan using qr scanner, use book details page

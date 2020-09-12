@@ -168,24 +168,24 @@ export class MyPagesPage {
     )
   }
 
-  public convertUrl(url) {
-    let newUrl = url;
-    if ((<any>window).Ionic.WebView) {
-      newUrl = (<any>window).Ionic.WebView.convertFileSrc(url);
-    }
-    else {
-      newUrl = normalizeURL(url);
-    }
-    console.log("url: " + url + " new-url: " + newUrl);
-    return newUrl;
-    // return this.sanitizer.bypassSecurityTrustUrl(newUrl);
-  }
+  // public convertUrl(url) {
+  //   let newUrl = url;
+  //   if ((<any>window).Ionic.WebView) {
+  //     newUrl = (<any>window).Ionic.WebView.convertFileSrc(url);
+  //   }
+  //   else {
+  //     newUrl = normalizeURL(url);
+  //   }
+  //   console.log("url: " + url + " new-url: " + newUrl);
+  //   return newUrl;
+  //   // return this.sanitizer.bypassSecurityTrustUrl(newUrl);
+  // }
 
 
   //opens media with given url in in-app-browser
   openMedia(mediaUrl: string) {
     console.log("#########################################ritesh playing media at: ", mediaUrl);
-    mediaUrl = this.convertUrl(mediaUrl);
+    //mediaUrl = this.convertUrl(mediaUrl);
     console.log("media url converted: ", mediaUrl )
     let optionString = "location=no,hidden=no";
     if (this.platform.is("ios")) {
