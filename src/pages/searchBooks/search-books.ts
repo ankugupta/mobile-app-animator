@@ -7,7 +7,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Book } from '../../model/book';
 import { BooksProvider } from '../../providers/books.provider';
 import { DeviceProvider } from '../../providers/device.provider';
-
 import * as PageConstants from '../pages.constants';
 
 @IonicPage()
@@ -41,6 +40,7 @@ export class SearchBooksPage {
   }
 
   ionViewWillEnter() {
+    this.filters.class = this.booksProvider.getClassFilter();
     if (this.deviceProvider.checkNetworkDisconnected()) {
       this.presentOfflineAlert();
     }
@@ -49,18 +49,18 @@ export class SearchBooksPage {
       this.loadBooks();
     }
 
-    this.subscribeToClassFilterSubject();
+    //this.subscribeToClassFilterSubject();
 
   }
 
   //we subscribe to the subject tracking the filter's value
-  subscribeToClassFilterSubject() {
-    this.booksProvider.getClassFilterAsObservable().subscribe(classFilterVal => {
-      this.filters.class = classFilterVal;
-      console.log("new value of class filter: " + this.filters.class);
-      //this.filterBooks("class");
-    })
-  }
+  // subscribeToClassFilterSubject() {
+  //   this.booksProvider.getClassFilterAsObservable().subscribe(classFilterVal => {
+  //     this.filters.class = classFilterVal;
+  //     console.log("new value of class filter: " + this.filters.class);
+  //     //this.filterBooks("class");
+  //   })
+  // }
 
   /**
    * loads all books of publisher
@@ -106,6 +106,7 @@ export class SearchBooksPage {
       console.log("subject filter reset");
       this.filters.subject = "All";
       this.subjectList = ["All"];
+      this.booksProvider.setClassFilterNextVal(this.filters.class);
     }
     let classFilter = this.filters.class;
     let subjectFilter = this.filters.subject;

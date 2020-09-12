@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.pelican.harish.animator" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Pelican</name>
+<widget id="com.pelican.harish.animator.test" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PelicanTest</name>
     <description>An AR app for animating books</description>
     <author email="pelicanpublishinghouse@gmail.com" href="http://www.dachepalli.com/">A K G</author>
     <content src="index.html" />

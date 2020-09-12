@@ -16,7 +16,6 @@ import * as PageConstants from '../pages.constants';
 export class BookFilterPage {
 
   schoolClassList: string[] = [];
-  //currentClass: string;
 
   constructor(private navCtrl: NavController,
     private platform: Platform,
@@ -37,18 +36,10 @@ export class BookFilterPage {
       //in other parts of the app
       this.loadBooks();
     }
-    //this.subscribeToClassFilterSubject();
 
   }
 
-  //the value of class filter can be updated via this page itself
-  //however, to highlight the current filter value next time this page opens,
-  //we subscribe to the subject tracking the filter's value
-  // subscribeToClassFilterSubject() {
-  //   this.booksProvider.getClassFilterAsObservable().subscribe(classFilter => {
-  //     this.currentClass = classFilter;
-  //   })
-  // }
+  
 
   //triggers loading of book list - uses the list of school classes calculated from book data
   //to give users an option to filter books by class

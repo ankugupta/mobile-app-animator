@@ -15,6 +15,7 @@ export class BooksProvider {
   booksCache: Book[] = [];
   schoolClassSet: Set<string> = new Set();
   classFilterSubject: Subject<string> = new BehaviorSubject("All");
+  classFilter: string = "All";
   bookIdToDetailsMap: Map<string, Book> = new Map();
 
   //flag - false indicates that books section is already initialized
@@ -97,11 +98,15 @@ export class BooksProvider {
   }
 
   public setClassFilterNextVal(nextVal: string) {
-    this.classFilterSubject.next(nextVal);
+    this.classFilter = nextVal;
   }
 
-  public getClassFilterAsObservable(): Observable<string> {
-    return this.classFilterSubject.asObservable();
+  // public getClassFilterAsObservable(): Observable<string> {
+  //   return this.classFilterSubject.asObservable();
+  // }
+
+  public getClassFilter(): string {
+    return this.classFilter;
   }
 
   public getSchoolClassList(): string[] {
