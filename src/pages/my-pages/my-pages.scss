@@ -1,7 +1,7 @@
 page-my-pages {
     ion-card {
-        background: #324d5c !important;
-        color: #fff;
+        background: #fff !important;
+        color: #767676;
         img {
             display: block !important;
         }
@@ -14,14 +14,14 @@ page-my-pages {
     }
     .deleteBtn {
         font-size: 30px !important;
-        color: #fff !important;
+        color: #767676 !important;
         height: 35px;
         margin: 0;
         padding: 0;
     }
     .pageNumber {
-        border-right: 1px solid #4c6471;
-        color: #fff;
+        border-right: 1px solid #767676;
+        color: #767676;
         text-transform: uppercase;
         font-size: 24px;
     }

@@ -24,9 +24,6 @@ page-search-books {
             height: 100% !important;
         }
     }
-    .card {
-        background: #efefef !important;
-    }
     .popover-content {
         padding: 15px;
         width: 60% !important;
@@ -34,9 +31,10 @@ page-search-books {
     .filerCard {
         padding: 10px 0 0 0;
         margin-bottom: 10px !important;
-        background: #fec12b !important;
+        background: #652d91 !important;
         width: 105% !important;
         margin: -10px -10px 10px !important;
+        border-radius: 0 !important;
         h1 {
             text-align: center;
             font-size: 21px;
@@ -49,13 +47,14 @@ page-search-books {
             min-height: 44px;
             border-top: 0.55px solid transparent;
             border-bottom: 0.55px solid rgba(0, 0, 0, 0.05);
-            background: #fec12b;
+            background: #652d91;
         }
         ion-list {
             padding: 0 10px 5px;
-            background: #fec12b;
+            background: #652d91;
             .item {
                 background: transparent;
+                color: #fff !important;
             }
         }
     }
@@ -65,10 +64,10 @@ page-search-books {
         }
     }
     .item-inner {
-        border-bottom: 1px solid #fff !important;
+        border-bottom: 1px solid #4f2370 !important;
     }
     .select-icon-inner {
-        color: #000 !important;
+        color: #fff !important;
     }
     .select-text {
         font-weight: 700;
@@ -77,6 +76,6 @@ page-search-books {
     .item-input .label-md,
     .item-select .label-md,
     .item-datetime .label-md {
-        color: #000;
+        color: #fff;
     }
 }
